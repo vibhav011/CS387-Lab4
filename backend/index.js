@@ -1,7 +1,25 @@
 var express = require('express');
+var cors = require('cors');
 const path = require('path')
 var app = express();
 app.use(express.static('public'));
+
+// allowing cors
+
+var corsOptions = function (req, res, next) {
+	var whitelist = [
+		process.env.FRONTEND_URL,
+	];
+	var origin = req.headers.origin;
+
+	if (whitelist.indexOf(origin) > -1) {
+		res.setHeader('Access-Control-Allow-Origin', origin);
+	}
+	res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+	next();
+}
+app.use(corsOptions);
 
 // creating a client
 require('dotenv').config({path: path.resolve(__dirname+"/.env")});
