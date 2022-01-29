@@ -16,3 +16,14 @@ const db_client = new Client({
 ;(async () => {
 await db_client.connect()
 })()
+
+app.get('/matches', function (request, response) {
+  // call get function
+})
+
+
+var server = app.listen(8081, function () {
+  var host = server.address().address
+  var port = server.address().port
+  console.log("Example app listening at http://%s:%s", host, port)
+})
