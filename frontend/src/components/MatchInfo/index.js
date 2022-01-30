@@ -27,15 +27,18 @@ class MatchInfo extends React.Component {
         this.state = {
             expanded: 'panel1',
             b2data: {},
-            b3data: {}
+            b3data: {},
+            b4data: {},
+            b4pie: {}
         };
     }
 
     componentDidMount() {
         const { id } = this.props.params;
-        setTimeout(() => {
-            this.fetchData(id);
-        }, 1000);
+        // setTimeout(() => {
+        //     this.fetchData(id);
+        // }, 1000);
+        this.fetchData(id);
     }
 
     fetchData(id) {
@@ -65,6 +68,36 @@ class MatchInfo extends React.Component {
                 }
                 else {
                     console.log("Error in score_comparison fetch");
+                    console.log(body.error);
+                }
+            });
+        
+        fetch(`http://localhost:8081/matches/match_summary/${id}`)
+            .then(res => res.json().then(data => ({ status: res.status, body: data })))
+            .then(data => {
+                let body = data.body;
+
+                if (data.status === 200) {
+                    console.log(body);
+                    this.setState({ b4data: body });
+                }
+                else {
+                    console.log("Error in match_summary fetch");
+                    console.log(body.error);
+                }
+            });
+        
+        fetch(`http://localhost:8081/matches/pie_chart/${id}`)
+            .then(res => res.json().then(data => ({ status: res.status, body: data })))
+            .then(data => {
+                let body = data.body;
+
+                if (data.status === 200) {
+                    console.log(body);
+                    this.setState({ b4pie: body });
+                }
+                else {
+                    console.log("Error in match_summary fetch");
                     console.log(body.error);
                 }
             });
@@ -130,7 +163,7 @@ class MatchInfo extends React.Component {
                                     </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    {Summary}
+                                    <Summary data={this.state.b4data} pie={this.state.b4pie} />
                                 </AccordionDetails>
                             </Accordion>
                         </Grid>

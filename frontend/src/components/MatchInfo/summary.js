@@ -1,7 +1,7 @@
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import CustomTable from 'components/CustomTable';
+import CustomTable2 from 'components/CustomTable2';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -9,6 +9,8 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { PieChart, Pie, Cell } from 'recharts';
 import RectangleIcon from '@mui/icons-material/Rectangle';
+import CircularProgress from '@mui/material/CircularProgress';
+import { ConstructionOutlined } from '@mui/icons-material';
 
 const headers = [
     'Batsman', '', 'Bowler', ''
@@ -52,9 +54,45 @@ const data01 = [
         "value": 189
     }
 ];
-const COLORS = ['#0088FE', '#c036c7', '#00C49F', '#c7363d', '#FFBB28', '#FF8042'];
+const COLORS = ['#0088FE', '#C036C7', '#FFBB28', '#C7363D','#00C49F', '#FF8042'];
 
-const Summary = <>
+function formatter(pie) {
+    let mapping = {"ones": 1, "twos": 2, "threes": 3, "fours": 4, "sixes": 6, "extra_runs": 1}
+    pie = pie['data']
+    let ind = parseInt(pie[0]['innings_no'])-1;
+
+    let data1 = Object.keys(pie[ind]).map(key => {
+        if (mapping[key] != undefined) {
+            return {
+                name: key,
+                value: mapping[key] * parseInt(pie[ind][key])
+            }
+        }
+    }).filter((e) => e != undefined);
+    let data2 = Object.keys(pie[1-ind]).map(key => {
+        if (mapping[key] != undefined) {
+            return {
+                name: key,
+                value: mapping[key] * parseInt(pie[1-ind][key])
+            }
+        }
+    }).filter((e) => e != undefined);
+   
+    return {data1:data1, data2:data2};
+}
+
+function Summary(props) {
+    let data = props.data;
+    let pie = props.pie;
+
+    if (Object.keys(data).length === 0 || Object.keys(pie).length === 0) {
+        return (<><CircularProgress /></>)
+    }
+    const piedata = formatter(pie);
+    const data1 = piedata.data1;
+    const data2 = piedata.data2;
+
+    return ( <>
 
     <Accordion>
         <AccordionSummary
@@ -80,7 +118,7 @@ const Summary = <>
                     title={<b>India</b>}
                 />
                 <CardContent>
-                    <CustomTable header={headers} rows={dummy_rows} skip={1} limit={1} pagination={false} />
+                    <CustomTable2 header={headers} rows={dummy_rows} />
                 </CardContent>
             </Card>
 
@@ -91,7 +129,7 @@ const Summary = <>
                     title={<b>South Africa</b>}
                 />
                 <CardContent>
-                    <CustomTable header={headers} rows={dummy_rows2} skip={1} limit={1} pagination={false} />
+                    <CustomTable2 header={headers} rows={dummy_rows2} />
                 </CardContent>
             </Card>
 
@@ -121,9 +159,9 @@ const Summary = <>
                 <CardContent>
                     <PieChart width={400} height={400}>
                         {/* <Legend /> */}
-                        <Pie data={data01} dataKey="value" cx="50%" cy="40%" outerRadius={100} fill="#8884d8" label>
+                        <Pie isAnimationActive={false} data={data1} dataKey="value" cx="50%" cy="40%" outerRadius={100} fill="#8884d8" label>
                             {
-                                data01.map((entry, index) => (
+                                data1.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))
                             }
@@ -137,9 +175,9 @@ const Summary = <>
                 <CardContent>
                     <PieChart width={400} height={400}>
                         {/* <Legend /> */}
-                        <Pie data={data01} dataKey="value" cx="50%" cy="40%" outerRadius={100} fill="#8884d8" label>
+                        <Pie isAnimationActive={false} data={data2} dataKey="value" cx="50%" cy="40%" outerRadius={100} fill="#8884d8" label>
                             {
-                                data01.map((entry, index) => (
+                                data2.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))
                             }
@@ -148,16 +186,19 @@ const Summary = <>
                 </CardContent>
             </Card>
             <br/><br/><br/>
-            <CustomTable headersEnabled={false} rows={[
+            <CustomTable2 rows={[
           data01.map((entry, index) => (
             <>
             <RectangleIcon sx={{color:`${COLORS[index]}`}} />&nbsp;{entry.name}
             </>
           ))
-            ]} skip={1} limit={1} pagination={false} />
+            ]} />
         </AccordionDetails>
 
     </Accordion>
 </>
+
+    )
+}
 
 export default Summary;
