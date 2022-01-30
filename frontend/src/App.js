@@ -45,7 +45,7 @@ export default function App() {
       <Routes>
         
         {/* {getRoutes(routes)} */}
-        <Route path="/matches/:id" element={<MatchInfo />} />
+        <Route path="/match/:id" element={<MatchInfo />} />
         <Route path="/matches*" element={<Matches />} />
         <Route path="/presentation" element={<Presentation />} />
         <Route path="*" element={<Navigate to="/presentation" />} />

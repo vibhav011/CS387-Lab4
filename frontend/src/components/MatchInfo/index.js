@@ -8,7 +8,8 @@ import CustomTable from "components/CustomTable";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import BaseLayout from "layouts/sections/components/BaseLayout";
-import { useEffect, useRef, useState } from "react";
+import React from "react";
+
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -17,14 +18,46 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ScorecardElement from "./scorecard";
 import ScoreComparisonElement from "./scoreComparison";
 import Card from '@mui/material/Card';
+import Summary from "./summary";
 
-function MatchInfo(props) {
-    const { id } = useParams();
-    const [expanded, setExpanded] = useState('panel1');
+class MatchInfo extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            expanded: 'panel1',
+            b2data: {}
+        };
+    }
 
-    const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
+    componentDidMount() {
+        const { id } = this.props.params;
+        setTimeout(() => {
+            this.fetchData(id);
+        }, 1000);
+    }
+
+    fetchData(id) {
+        fetch(`http://localhost:8081/matches/scorecard/${id}`)
+        .then(res => res.json().then(data => ({ status: res.status, body: data })))
+        .then(data => {
+            let body = data.body;
+
+            if (data.status === 200) {
+            console.log(body);
+            this.setState({b2data: body});
+            }
+            else {
+            console.log("Error in Matches fetch");
+            console.log(body.error);
+            }
+        });
+    }
+
+    handleChange = (panel) => (event, isExpanded) => {
+        this.setState({expanded: isExpanded ? panel : false});
     };
+
+    render() {
     return (
         <BaseLayout title="Match Info"
             breadcrumb={[
@@ -34,7 +67,7 @@ function MatchInfo(props) {
             <MKBox component="section" py={{ xs: 3, md: 3 }}>
                 <Container>
                     <Grid container alignItems="center" justifyContent="center">
-                        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} sx = {{borderRadius: '10px', width: "85%"}}>
+                        <Accordion expanded={this.state.expanded === 'panel1'} onChange={this.handleChange('panel1')} sx = {{borderRadius: '10px', width: "85%"}}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon sx ={{color:"#fff"}} />}
                                 aria-controls="panel1bh-content"
@@ -46,11 +79,11 @@ function MatchInfo(props) {
                                 </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                            {ScorecardElement}
+                            <ScorecardElement data={this.state.b2data}/>
                             </AccordionDetails>
                         </Accordion>
 
-                        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')} sx = {{borderRadius: '10px', width: "85%", marginTop: '10px', marginBottom: '10px'}}>
+                        <Accordion expanded={this.state.expanded === 'panel2'} onChange={this.handleChange('panel2')} sx = {{borderRadius: '10px', width: "85%", marginTop: '10px', marginBottom: '10px'}}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon sx ={{color:"#fff"}}/>}
                                 aria-controls="panel2bh-content"
@@ -62,11 +95,11 @@ function MatchInfo(props) {
                                 </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Card sx = {{marginLeft:'auto', marginRight:'auto', padding:'5px', width:'800px', height:'400px'}}>{ScoreComparisonElement}</Card>
+                                <Card sx = {{marginLeft: 'auto', marginRight:'auto', padding:'5px', width:'800px', height:'400px'}}>{ScoreComparisonElement}</Card>
                             </AccordionDetails>
                         </Accordion>
 
-                        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')} sx = {{borderRadius: '10px', width: "85%"}}>
+                        <Accordion expanded={this.state.expanded === 'panel3'} onChange={this.handleChange('panel3')} sx = {{borderRadius: '10px', width: "85%"}}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon sx ={{color:"#fff"}} />}
                                 aria-controls="panel3bh-content"
@@ -78,10 +111,7 @@ function MatchInfo(props) {
                                 </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Typography>
-                                    Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-                                    Aliquam eget maximus est, id dignissim quam.
-                                </Typography>
+                            {Summary}
                             </AccordionDetails>
                         </Accordion>
                     </Grid>
@@ -89,6 +119,7 @@ function MatchInfo(props) {
             </MKBox>
         </BaseLayout>
     );
+        }
 }
 
-export default MatchInfo;
+export default (props) => (<MatchInfo params={useParams()} />);

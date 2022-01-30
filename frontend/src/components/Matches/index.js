@@ -18,7 +18,7 @@ const headers = [
 function formatter(match) {
   return [match.season_year,
   <>
-    <a href={"/matches/" + match.match_id} style={{ color: "#3d82cc", fontWeight: "bold" }}>
+    <a href={"/match/" + match.match_id} style={{ color: "#3d82cc", fontWeight: "bold" }}>
       {match.team1_name} vs {match.team2_name}
     </a>
     <p style={{ color: "#6e6867", fontSize: "15px" }}>[{match.venue_name}, {match.city_name}]</p>

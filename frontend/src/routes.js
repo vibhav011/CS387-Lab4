@@ -63,7 +63,7 @@ const routes = [
   {
     name: "players",
     icon: <SportsHandball />,
-    route: "/matches/200",
+    route: "/match/200",
     // component: <Features />,
   },
   {
