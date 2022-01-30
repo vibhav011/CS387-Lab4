@@ -42,6 +42,13 @@ app.get('/matches', function (request, response) {
   get_matches(db_client, request, response);
 })
 
+const get_matches_match_id = require('./get_matches_match_id');
+app.get('/matches/[0-9]*', function (request, response) {
+  var match_id = request.url.split('/')[2]
+  console.log('match_id ', match_id)
+  get_matches_match_id(db_client, match_id, response);
+})
+
 
 var server = app.listen(8081, function () {
   var host = server.address().address
