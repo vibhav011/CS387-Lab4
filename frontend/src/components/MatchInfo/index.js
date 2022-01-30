@@ -15,6 +15,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ScorecardElement from "./scorecard";
+import ScoreComparisonElement from "./scoreComparison";
+import Card from '@mui/material/Card';
 
 function MatchInfo(props) {
     const { id } = useParams();
@@ -60,10 +62,7 @@ function MatchInfo(props) {
                                 </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Typography>
-                                    Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-                                    Aliquam eget maximus est, id dignissim quam.
-                                </Typography>
+                                <Card sx = {{marginLeft:'auto', marginRight:'auto', padding:'5px', width:'800px', height:'400px'}}>{ScoreComparisonElement}</Card>
                             </AccordionDetails>
                         </Accordion>
 
