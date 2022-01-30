@@ -5,7 +5,18 @@ function json_concat(o1, o2) {
   return o1;
  }
 
-function get_batting(db_client, match_id, innings_no) { // request and response are parts of the http get method
+ async function updateRetJSON(db_client, query, params, ret_json, error, key) {
+  try {
+    res = await db_client.query(query, params)
+    ret_json[key] = res.rows
+  }
+  catch (err) {
+    error.status = 500;
+    error.message = err.message;
+  }
+}
+
+async function get_batting(db_client, match_id, innings_no, ret_json, error) { // request and response are parts of the http get method
   const query = '	select player_name as batter, runs, fours, sixes, balls_faced from player, \
   (select striker, sum(runs_scored) as runs, count(sixes) as sixes, \
   count(fours) as fours, count(*) as balls_faced from \
@@ -13,13 +24,8 @@ function get_batting(db_client, match_id, innings_no) { // request and response 
       case when runs_scored = 4 then 1 end fours \
       from ball_by_ball where match_id = $1 and innings_no = $2) aggs group by striker)\
        ball_info where striker = player_id'
-  db_client.query(query, [match_id, innings_no], (err, res) => {
-    if (err) {
-      return err, null
-    } else {
-      return null, res.rows
-    }
-  })
+  
+  await updateRetJSON(db_client, query, [match_id, innings_no], ret_json, error, 'batting')
 }
 
 function get_bowling(db_client, match_id, innings_no) {
@@ -109,67 +115,70 @@ function get_score(db_client, match_id, innings_no) {
   })
 }
 
-function get_match_id_json(db_client, match_id, response) {
-  for (let i = 0; i < 2; i++) {
-    get_batting(db_client, match_id, i, (err, res) => {
-      if(err) {
-        console.log('innings '+i + 'batting', err)
-        response.status(500).json({ error: err.message })
-        is_err = true
-      } else {
-        ret_json['innings'+i]['batting'] = res
-      }
-    })
+async function get_match_id_json(db_client, match_id, ret_json, err) {
+  for (let i = 1; i < 3; i++) {
+    await get_batting(db_client, match_id, i, ret_json['innings'+i], err)
+    if (err.status !== 200) return;
 
-    get_bowling(db_client, match_id, i, (err, res) => {
-      if(err) {
-        console.log('innings '+ i +'bowling', err)
-        response.status(500).json({ error: err.message })
-        is_err = true
-      } else {
-        ret_json['innings'+i]['bowling'] = res
-      }
-    })
+  //   get_bowling(db_client, match_id, i, (err, res) => {
+  //     if(err) {
+  //       console.log('innings '+ i +'bowling', err)
+  //       response.status(500).json({ error: err.message })
+  //       is_err = true
+  //     } else {
+  //       ret_json['innings'+i]['bowling'] = res
+  //     }
+  //   })
 
-    get_extras(db_client, match_id, 1, (err, res) => {
-      if(err) {
-        console.log('innings '+ i +'bowling', err)
-        response.status(500).json({ error: err.message })
-        is_err = true
-      } else {
-        ret_json['innings'+i]['extras'] = res
-      }
-    })
+  //   get_extras(db_client, match_id, 1, (err, res) => {
+  //     if(err) {
+  //       console.log('innings '+ i +'bowling', err)
+  //       response.status(500).json({ error: err.message })
+  //       is_err = true
+  //     } else {
+  //       ret_json['innings'+i]['extras'] = res
+  //     }
+  //   })
 
-    get_score(db_client, match_id, 1, (err, res) => {
-      if(err) {
-        console.log('innings '+ i +'bowling', err)
-        response.status(500).json({ error: err.message })
-        is_err = true
-      } else {
-        ret_json['innings'+i]['score'] = res
-      }
-    })
+  //   get_score(db_client, match_id, 1, (err, res) => {
+  //     if(err) {
+  //       console.log('innings '+ i +'bowling', err)
+  //       response.status(500).json({ error: err.message })
+  //       is_err = true
+  //     } else {
+  //       ret_json['innings'+i]['score'] = res
+  //     }
+  //   })
+  // }
+
+  // get_match_info(db_client, match_id, (err, res) => {
+  //   if(err) {
+  //     console.log('match info', err)
+  //     response.status(500).json({ error: err.message })
+  //     is_err = true
+  //   } else {
+  //     ret_json['match info'] = res
+  //   }
+  // })
   }
-
-  get_match_info(db_client, match_id, (err, res) => {
-    if(err) {
-      console.log('match info', err)
-      response.status(500).json({ error: err.message })
-      is_err = true
-    } else {
-      ret_json['match info'] = res
-    }
-  })
 }
 
-function get_matches_match_id(db_client, match_id, response) { 
-  var ret_json = {}
-  var is_err = false
-  get_match_id_json(db_client, match_id, response, ret_json, is_err, () => {
-    if(is_err) return;
-    response.status(200).json({ data: ret_json });
-  })
+async function get_matches_match_id(db_client, request, response) { 
+  var match_id = parseInt(request.params.match_id);
+  if (!match_id) {
+    response.status(400).json({ error: 'match_id must be an integer' })
+    return
+  }
+  var ret_json = {'innings1':{}, 'innings2':{}, 'match_info':{}}
+  var err = {status: 200, message: 'success'}
+  await get_match_id_json(db_client, match_id, ret_json, err)
+
+  if (err.status === 200) {
+    response.status(200).json(ret_json)
+  }
+  else {
+    response.status(err.status).json({ error: err.message })
+  }
 }
 
 module.exports = get_matches_match_id;
