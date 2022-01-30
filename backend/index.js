@@ -37,14 +37,19 @@ const db_client = new Client({
   await db_client.connect()
 })()
 
-const get_matches = require('./get_matches');
+const get_matches = require('./matches/get_matches');
 app.get('/matches', function (request, response) {
   get_matches(db_client, request, response);
 })
 
-const get_matches_match_id = require('./get_matches_match_id');
+const get_scorecard = require('./matches_match_id/get_scorecard');
 app.get('/matches/scorecard/:match_id', function (request, response) {
-  get_matches_match_id(db_client, request, response);
+  get_scorecard(db_client, request, response);
+})
+
+const get_score_comparison = require('./matches_match_id/get_score_comparison');
+app.get('/matches/score_comparison/:match_id', function (request, response) {
+  get_score_comparison(db_client, request, response);
 })
 
 
