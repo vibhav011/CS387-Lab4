@@ -108,11 +108,7 @@ async function get_match_id_json(db_client, match_id, ret_json, err) {
   await get_umpires(db_client, match_id, ret_json['match_info'], err)
 }
 
-<<<<<<< HEAD:backend/matches_match_id/get_scorecard.js
-async function get_scorecard(db_client, request, response) { 
-=======
-async function get_matches_match_id(db_client, request, response) {
->>>>>>> e86aa2d67b6a5fb2fa03b06d201e17c84f39529c:backend/get_matches_match_id.js
+async function get_scorecard(db_client, request, response) {
   var match_id = parseInt(request.params.match_id);
   if (!match_id) {
     response.status(400).json({ error: 'match_id must be an integer' })
