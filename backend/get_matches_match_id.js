@@ -14,7 +14,7 @@ async function updateArrayJSON(db_client, query, params, ret_json, error, key1, 
     res = await db_client.query(query, params)
     if (!(key1 in ret_json)) ret_json[key1] = {}
     ret_json[key1][key2] = []
-    for (let i=0; i < res.rows.length; i++) {
+    for (let i = 0; i < res.rows.length; i++) {
       ret_json[key1][key2][i] = res.rows[i][key2]
     }
   }
@@ -32,7 +32,7 @@ async function get_batting(db_client, match_id, innings_no, ret_json, error) {
       case when runs_scored = 4 then 1 end fours \
       from ball_by_ball where match_id = $1 and innings_no = $2) aggs group by striker)\
        ball_info where striker = player_id'
-  
+
   await updateRetJSON(db_client, query, [match_id, innings_no], ret_json, error, 'batting')
 }
 
@@ -41,7 +41,7 @@ async function get_bowling(db_client, match_id, innings_no, ret_json, error) {
   from player, (select bowler, count(*) as balls_bowled, sum(runs_scored) as runs_given, count(wickets) as wickets \
    from (select bowler, match_id, runs_scored, case when out_type != \'run out\' and out_type != \'retired hurt\' and out_type is not NULL then 1 end wickets\
       from ball_by_ball where match_id = $1 and innings_no = $2) aggs group by bowler) ball_info where bowler = player_id'
-  
+
   await updateRetJSON(db_client, query, [match_id, innings_no], ret_json, error, 'bowling')
 }
 
@@ -86,37 +86,36 @@ async function get_score(db_client, match_id, innings_no, ret_json, error) {
 
 async function get_match_id_json(db_client, match_id, ret_json, err) {
   for (let i = 1; i < 3; i++) {
-    await get_batting(db_client, match_id, i, ret_json['innings'+i], err)
+    await get_batting(db_client, match_id, i, ret_json['innings' + i], err)
     if (err.status !== 200) return;
 
-    await get_bowling(db_client, match_id, i, ret_json['innings'+i], err)
+    await get_bowling(db_client, match_id, i, ret_json['innings' + i], err)
     if (err.status !== 200) return;
 
-    await get_extras(db_client, match_id, i, ret_json['innings'+i], err)
+    await get_extras(db_client, match_id, i, ret_json['innings' + i], err)
     if (err.status !== 200) return;
 
-    await get_score(db_client, match_id, i, ret_json['innings'+i], err)
+    await get_score(db_client, match_id, i, ret_json['innings' + i], err)
     if (err.status !== 200) return;
-
-    await get_match_info(db_client, match_id, ret_json['match_info'], err)
-    if (err.status !== 200) return;
-
-    await get_players(db_client, match_id, ret_json['match_info'], err)
-    if (err.status !== 200) return;
-
-    await get_umpires(db_client, match_id, ret_json['match_info'], err)
-    if (err.status !== 200) return;    
   }
+
+  await get_match_info(db_client, match_id, ret_json['match_info'], err)
+  if (err.status !== 200) return;
+
+  await get_players(db_client, match_id, ret_json['match_info'], err)
+  if (err.status !== 200) return;
+
+  await get_umpires(db_client, match_id, ret_json['match_info'], err)
 }
 
-async function get_matches_match_id(db_client, request, response) { 
+async function get_matches_match_id(db_client, request, response) {
   var match_id = parseInt(request.params.match_id);
   if (!match_id) {
     response.status(400).json({ error: 'match_id must be an integer' })
     return
   }
-  var ret_json = {'innings1':{}, 'innings2':{}, 'match_info':{}}
-  var err = {status: 200, message: 'success'}
+  var ret_json = { 'innings1': {}, 'innings2': {}, 'match_info': {} }
+  var err = { status: 200, message: 'success' }
   await get_match_id_json(db_client, match_id, ret_json, err)
 
   if (err.status === 200) {
