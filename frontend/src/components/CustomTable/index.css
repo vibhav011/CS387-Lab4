@@ -1,0 +1,16 @@
+.table-body:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-body:hover {
+    background-color: #ddd;
+    /* cursor: pointer; */
+}
+
+.table-header {
+    background-color: #555359;
+}
+
+.link {
+    color: red;
+}
