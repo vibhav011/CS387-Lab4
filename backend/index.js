@@ -52,6 +52,15 @@ app.get('/matches/score_comparison/:match_id', function (request, response) {
   get_score_comparison(db_client, request, response);
 })
 
+const get_match_summary = require('./matches_match_id/get_match_summary.js');
+app.get('/matches/match_summary/:match_id', function (request, response) {
+  get_match_summary(db_client, request, response);
+})
+
+const get_pie_chart = require('./matches_match_id/get_pie_chart.js');
+app.get('/matches/pie_chart/:match_id', function (request, response) {
+  get_pie_chart(db_client, request, response);
+})
 
 var server = app.listen(8081, function () {
   var host = server.address().address
