@@ -22,13 +22,18 @@ async function get_innings_info(db_client, match_id, ret_json, error) {
 }
 
 async function get_team_names(db_client, match_id, ret_json, error) {
-  const query1 = 'select team_name from team, match where match.team1=team.team_id and match_id = $1 \
-  and ((team1 = toss_winner and toss_name = \'bat\') or (team2 = toss_winner and toss_name = \'field\'))'
+  const query1 = '(select team_name from team, match where match.team1=team.team_id and match_id = $1 \
+  and ((team1 = toss_winner and toss_name = \'bat\') or (team2 = toss_winner and toss_name = \'field\'))) union \
+  (select team_name from team, match where match.team2=team.team_id and match_id = $1 \
+  and ((team2 = toss_winner and toss_name = \'bat\') or (team1 = toss_winner and toss_name = \'field\')))'
 
   await updateRetJSON(db_client, query1, [match_id], ret_json, error, 'team1_name')  
 
-  const query2 = 'select team_name from team, match where match.team2=team.team_id and match_id = $1 \
-  and ((team1 = toss_winner and toss_name = \'bat\') or (team2 = toss_winner and toss_name = \'field\'))'
+  const query2 = '(select team_name from team, match where match.team2=team.team_id and match_id = $1 \
+  and ((team1 = toss_winner and toss_name = \'bat\') or (team2 = toss_winner and toss_name = \'field\'))) union \
+  (select team_name from team, match where match.team1=team.team_id and match_id = $1 \
+  and ((team1 = toss_winner and toss_name = \'field\') or (team2 = toss_winner and toss_name = \'bat\')))'
+
 
   await updateRetJSON(db_client, query2, [match_id], ret_json, error, 'team2_name')  
 }
