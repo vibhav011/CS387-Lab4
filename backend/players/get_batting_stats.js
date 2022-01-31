@@ -2,7 +2,7 @@ function get_batting_stats(db_client, request, response) { // request and respon
     var ret_json = null
     var player_id = parseInt(request.params.player_id);
     if (!player_id) {
-      response.status(400).json({ error: 'match_id must be an integer' })
+      response.status(400).json({ error: 'player_id must be an integer' })
       return
     }
     const query = 'select matches, runs, runs_in_fours, runs_in_sixes, fifties, highest_score, strike_rate, average from \

@@ -72,6 +72,11 @@ app.get('/players/batting_stats/:player_id', function (request, response) {
   get_batting_stats(db_client, request, response);
 })
 
+const get_batting_graph = require('./players/get_batting_graph.js');
+app.get('/players/batting_graph/:player_id', function (request, response) {
+  get_batting_graph(db_client, request, response);
+})
+
 const get_bowling_stats = require('./players/get_bowling_stats.js');
 app.get('/players/bowling_stats/:player_id', function (request, response) {
   get_bowling_stats(db_client, request, response);
