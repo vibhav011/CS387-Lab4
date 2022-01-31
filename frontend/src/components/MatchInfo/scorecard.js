@@ -10,23 +10,19 @@ import CircularProgress from '@mui/material/CircularProgress';
 const headers_bat = [
     'Batter', 'Runs', 'Fours', 'Sixes', 'Balls faced'
 ]
-
 const headers_bowl = [
     'Bowler', 'Balls Bowled', 'Runs Given', 'Wickets'
 ]
-
-const dummy_rows = [
-    ['Match', 'WIU19 vs AUSU19, 1st Match, Group D, ICC Under 19 World Cup 2022'],
-    ['Toss', 'West Indies U19 won the toss and opt to bat'],
-    ['Venue', 'Providence Stadium, Guyana'],
-    ['Umpires', 'Buddhi Pradhan, David Millns'],
-    ['Playing XI of team1', 'Matthew Nandu, Shaqkere Parris, Teddy Bishop, Rivaldo Clarke (wk), Ackeem Auguste (c), Giovonte Depeiza, Anderson Mahase, Johann Layne, McKenny Clarke, Shiva Sankar, Onaje Amory'],
-    ['Playing XI of team2', 'Teague Wyllie, Corey Miller, Isaac Higgins, Cooper Connolly (c), Nivethan Radhakrishnan, Campbell Kellaway, Aidan Cahill, Tobias Snell (wk), William Salzmann, Tom Whitney, Harkirat Bajwa']
-]
+const json_keys = {
+    batting: ['batter', 'runs', 'fours', 'sixes', 'balls_faced'],
+    bowling: ['bowler', 'balls_bowled', 'runs_given', 'wickets']
+}
 
 function formatter(data, inn, bat) {
     return data[inn][bat].map((d) => {
-        return Object.keys(d).map((k) => { return d[k]; })
+        return json_keys[bat].map((k, i) => {
+            return (i == 0) ? <a href={"/players/"+d["player_id"]} style={{ color: "#3d82cc", fontWeight: "bold" }}>{d[k]}</a> : d[k]
+        })
     });
 }
 
@@ -53,7 +49,7 @@ function ScorecardElement(props) {
     }
 
     return (<>
-        <Accordion>
+        <Accordion defaultExpanded={true}>
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1bh-content"
