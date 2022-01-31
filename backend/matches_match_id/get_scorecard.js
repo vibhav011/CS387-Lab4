@@ -25,7 +25,7 @@ async function updateArrayJSON(db_client, query, params, ret_json, error, key1, 
 }
 
 async function get_batting(db_client, match_id, innings_no, ret_json, error) {
-  const query = '	select player_name as batter, runs, fours, sixes, balls_faced from player, \
+  const query = '	select player_id, player_name as batter, runs, fours, sixes, balls_faced from player, \
   (select striker, sum(runs_scored) as runs, count(sixes) as sixes, \
   count(fours) as fours, count(*) as balls_faced from \
   (select striker, match_id, runs_scored, case when runs_scored = 6 then 1 end sixes, \
@@ -37,7 +37,7 @@ async function get_batting(db_client, match_id, innings_no, ret_json, error) {
 }
 
 async function get_bowling(db_client, match_id, innings_no, ret_json, error) {
-  const query = 'select player_name as bowler, balls_bowled, runs_given, wickets \
+  const query = 'select player_id, player_name as bowler, balls_bowled, runs_given, wickets \
   from player, (select bowler, count(*) as balls_bowled, sum(runs_scored) as runs_given, count(wickets) as wickets \
    from (select bowler, match_id, runs_scored, case when out_type != \'run out\' and out_type != \'retired hurt\' and out_type is not NULL then 1 end wickets\
       from ball_by_ball where match_id = $1 and innings_no = $2) aggs group by bowler) ball_info where bowler = player_id'
