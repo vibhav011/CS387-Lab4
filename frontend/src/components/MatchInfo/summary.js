@@ -7,7 +7,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { PieChart, Pie, Cell } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import RectangleIcon from '@mui/icons-material/Rectangle';
 import CircularProgress from '@mui/material/CircularProgress';
 import { ConstructionOutlined } from '@mui/icons-material';
@@ -16,150 +16,103 @@ const headers = [
     'Batsman', '', 'Bowler', ''
 ]
 
-const dummy_rows = [
-    ['Mithali', '50 (85)', 'Ismail', '3-28 (10)'],
-    ['Harmanpreet', '40 (41)', 'Mlaba', '2-41 (10)'],
-    ['Deepti', '27 (46)', 'Luus', '1-23 (5)']
-]
-
-const dummy_rows2 = [
-    ['Lee', '83 (122)', 'Jhulan', '2-38 (10)'],
-    ['Wolvaardt', '80 (110)', '', ''],
-    ['Luus', '1 (9)', '', '']
-]
-
-const data01 = [
-    {
-        "name": "Ones",
-        "value": 400
-    },
-    {
-        "name": "Twos",
-        "value": 300
-    },
-    {
-        "name": "Threes",
-        "value": 500
-    },
-    {
-        "name": "Fours",
-        "value": 200
-    },
-    {
-        "name": "Sixes",
-        "value": 278
-    },
-    {
-        "name": "Extras",
-        "value": 189
-    }
+const legendNames = [
+    "Ones", "Twos", "Threes", "Fours", "Sixes", "Extras"
 ];
-const COLORS = ['#0088FE', '#C036C7', '#FFBB28', '#C7363D','#00C49F', '#FF8042'];
+const COLORS = ['#0088FE', '#C036C7', '#FFBB28', '#C7363D', '#00C49F', '#FF8042'];
 
 function formatter(pie) {
-    let mapping = {"ones": 1, "twos": 2, "threes": 3, "fours": 4, "sixes": 6, "extra_runs": 1}
+    let mapping = { "ones": 1, "twos": 2, "threes": 3, "fours": 4, "sixes": 6, "extra_runs": 1 }
+    let mapping2 = { "ones": "Ones", "twos": "Twos", "threes": "Threes", "fours": "Fours", "sixes": "Sixes", "extra_runs": "Extras" }
     pie = pie['data']
-    let ind = parseInt(pie[0]['innings_no'])-1;
+    let ind = parseInt(pie[0]['innings_no']) - 1;
 
+    let total1 = 0
     let data1 = Object.keys(pie[ind]).map(key => {
         if (mapping[key] != undefined) {
+            let x = mapping[key] * parseInt(pie[ind][key])
+            total1 += x
             return {
-                name: key,
-                value: mapping[key] * parseInt(pie[ind][key])
+                name: mapping2[key],
+                value: x
             }
         }
     }).filter((e) => e != undefined);
-    let data2 = Object.keys(pie[1-ind]).map(key => {
+
+    let total2 = 0
+    let data2 = Object.keys(pie[1 - ind]).map(key => {
         if (mapping[key] != undefined) {
+            let x = mapping[key] * parseInt(pie[1 - ind][key])
+            total2 += x
             return {
-                name: key,
-                value: mapping[key] * parseInt(pie[1-ind][key])
+                name: mapping2[key],
+                value: x
             }
         }
     }).filter((e) => e != undefined);
-   
-    return {data1:data1, data2:data2};
+
+    return { data1: data1, data2: data2, total1: total1, total2: total2 };
+}
+
+function formatter2(data, team) {
+    data = data[team]
+    let rows = [];
+    for (let i = 0; i < 3; i++) {
+        let row = [];
+        if (i < data['batsmen'].length) {
+            let b = data['batsmen'][i]
+            row = row.concat([b['batsman_name'], `${b['runs']} (${b['balls_faced']})`])
+        } else {row = row.concat(['', ''])}
+        if (i < data['bowlers'].length) {
+            let b = data['bowlers'][i]
+            row = row.concat([b['bowler_name'], `${b['wickets']}-${b['runs_given']} (${b['overs_bowled']})`])
+        } else {row = row.concat(['', ''])}
+
+        if (row[0] + row[1] + row[2] + row[3] === '') break;
+
+        rows.push(row);
+    }
+    return rows;
 }
 
 function Summary(props) {
-    let data = props.data;
-    let pie = props.pie;
+    const data = props.data;
+    const pie = props.pie;
 
-    if (Object.keys(data).length === 0 || Object.keys(pie).length === 0) {
-        return (<><CircularProgress /></>)
-    }
-    const piedata = formatter(pie);
-    const data1 = piedata.data1;
-    const data2 = piedata.data2;
+    let acchead = <>
+        <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", marginLeft: "15%", color:"#4e4e4e" }}>
+            match_id
+        </Typography>
+        <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", marginLeft: "auto", marginRight: "auto", color:"#4e4e4e" }}>
+            IPL
+        </Typography>
+        <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", float: "right", color:"#4e4e4e" }}>
+            Year
+        </Typography>
+    </>
+    let tables = <CircularProgress />
+    let piechart = <CircularProgress />
 
-    return ( <>
+    if (Object.keys(pie).length !== 0) {
+        const piedata = formatter(pie);
+        const data1 = piedata.data1;
+        const data2 = piedata.data2;
+        let team1 = "Team 1"
+        let team2 = "Team 2"
+        if (Object.keys(data).length !== 0) {
+            team1 = data['match_info'][0]['team1_name']
+            team2 = data['match_info'][0]['team2_name'];
+        }
 
-    <Accordion>
-        <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1bh-content"
-            id="panel1bh-inner-header"
-        >
-            <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", marginLeft: "15%" }}>
-                1082599
-            </Typography>
-            <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", marginLeft: "auto", marginRight: "auto" }}>
-                IPL
-            </Typography>
-            <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", float: "right" }}>
-                2017
-            </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-            <Card>
-                <CardHeader
-                    sx={{ backgroundColor: '#555359', color: '#fff' }}
-                    disableTypography={true}
-                    title={<b>India</b>}
-                />
+        piechart = (<>
+            <Card sx={{ marginLeft: 'auto', marginRight: 'auto', width: '400px', height: '400px', float: "left" }}>
+                <CardHeader title={team1} />
                 <CardContent>
-                    <CustomTable2 header={headers} rows={dummy_rows} />
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader
-                    sx={{ backgroundColor: '#555359', color: '#fff' }}
-                    disableTypography={true}
-                    title={<b>South Africa</b>}
-                />
-                <CardContent>
-                    <CustomTable2 header={headers} rows={dummy_rows2} />
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader
-                    sx={{ backgroundColor: '#555359', color: '#fff', textAlign: 'center' }}
-                    disableTypography={true}
-                    title={<b>South Africa won by 8 wickets</b>}
-                />
-            </Card>
-        </AccordionDetails>
-    </Accordion>
-
-    <Accordion>
-        <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2bh-content"
-            id="panel2bh-inner-header"
-        >
-            <Typography sx={{ flexShrink: 0, fontWeight: "bold" }}>
-                Runs Distribution
-            </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-            <Card sx={{ marginLeft: 'auto', marginRight: 'auto', width: '400px', height: '400px', float:"left" }}>
-                <CardHeader title="India" />
-                <CardContent>
-                    <PieChart width={400} height={400}>
+                    <ResponsiveContainer width="100%" height={280}>
+                    <PieChart margin={{top:50}}>
                         {/* <Legend /> */}
-                        <Pie isAnimationActive={false} data={data1} dataKey="value" cx="50%" cy="40%" outerRadius={100} fill="#8884d8" label>
+                        <Tooltip />
+                        <Pie isAnimationActive={true} data={data1} dataKey="value" cx="50%" cy="40%" outerRadius={100} fill="#8884d8" label>
                             {
                                 data1.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -167,15 +120,19 @@ function Summary(props) {
                             }
                         </Pie>
                     </PieChart>
+                    </ResponsiveContainer>
+                    <Typography>Total: {piedata.total1}</Typography>
                 </CardContent>
             </Card>
 
-            <Card sx={{ marginLeft: 'auto', marginRight: 'auto', width: '400px', height: '400px', float:"right" }}>
-                <CardHeader title="South Africa" />
+            <Card sx={{ marginLeft: 'auto', marginRight: 'auto', width: '400px', height: '400px', float: "right" }}>
+                <CardHeader title={team2} />
                 <CardContent>
-                    <PieChart width={400} height={400}>
+                <ResponsiveContainer width="100%" height={280}>
+                    <PieChart margin={{top:50}}>
                         {/* <Legend /> */}
-                        <Pie isAnimationActive={false} data={data2} dataKey="value" cx="50%" cy="40%" outerRadius={100} fill="#8884d8" label>
+                        <Tooltip />
+                        <Pie isAnimationActive={true} data={data2} dataKey="value" cx="50%" cy="40%" outerRadius={100} fill="#8884d8" label>
                             {
                                 data2.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -183,20 +140,100 @@ function Summary(props) {
                             }
                         </Pie>
                     </PieChart>
+                    </ResponsiveContainer>
+                    <Typography>Total: {piedata.total2}</Typography>
                 </CardContent>
             </Card>
-            <br/><br/><br/>
+            <br /><br /><br />
             <CustomTable2 rows={[
-          data01.map((entry, index) => (
-            <>
-            <RectangleIcon sx={{color:`${COLORS[index]}`}} />&nbsp;{entry.name}
-            </>
-          ))
+                legendNames.map((entry, index) => (
+                    <>
+                        <RectangleIcon sx={{ color: `${COLORS[index]}` }} />&nbsp;{entry}
+                    </>
+                ))
             ]} />
-        </AccordionDetails>
+        </>)
+    }
 
-    </Accordion>
-</>
+    if (Object.keys(data).length !== 0) {
+        const info = data['match_info'][0];
+        console.log("info", info);
+        acchead = <>
+            <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", marginLeft: "15%", color:"#4e4e4e" }}>
+                {info.match_id}
+            </Typography>
+            <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", marginLeft: "auto", marginRight: "auto", color:"#4e4e4e" }}>
+                IPL
+            </Typography>
+            <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", float: "right", color:"#4e4e4e" }}>
+                {info.season_year}
+            </Typography>
+        </>
+
+        tables = (<>
+            <Card>
+                <CardHeader
+                    sx={{ backgroundColor: '#555359', color: '#fff' }}
+                    disableTypography={true}
+                    title={<b>{info.team1_name}</b>}
+                />
+                <CardContent>
+                    <CustomTable2 header={headers} rows={formatter2(data, "team1")} />
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader
+                    sx={{ backgroundColor: '#555359', color: '#fff' }}
+                    disableTypography={true}
+                    title={<b>{info.team2_name}</b>}
+                />
+                <CardContent>
+                    <CustomTable2 header={headers} rows={formatter2(data, "team2")} />
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader
+                    sx={{ backgroundColor: '#555359', color: '#fff', textAlign: 'center' }}
+                    disableTypography={true}
+                    title={<b>{info.winner} won by {info.win_margin} {info.win_type}</b>}
+                />
+            </Card>
+        </>)
+    }
+
+    return (<>
+
+        <Accordion defaultExpanded={false}>
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                id="panel1bh-inner-header"
+            >
+                {acchead}
+            </AccordionSummary>
+            <AccordionDetails>
+                {tables}
+            </AccordionDetails>
+        </Accordion>
+
+        <Accordion defaultExpanded={true}>
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2bh-content"
+                id="panel2bh-inner-header"
+            >
+                <Typography sx={{ flexShrink: 0, fontWeight: "bold", color:"#4e4e4e" }}>
+                    Runs Distribution
+                </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+                {piechart}
+            </AccordionDetails>
+
+        </Accordion>
+    </>
 
     )
 }

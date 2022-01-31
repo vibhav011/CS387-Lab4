@@ -28,34 +28,34 @@ function TabPanel(props) {
     const { children, value, index, ...other } = props;
     console.log("tabpanel props", props);
     return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
     );
-  }
-  
-  TabPanel.propTypes = {
+}
+
+TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
     value: PropTypes.number.isRequired,
-  };
-  
-  function a11yProps(index) {
+};
+
+function a11yProps(index) {
     return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
     };
-  }
+}
 
 
 class PlayerInfo extends React.Component {
@@ -128,7 +128,7 @@ class PlayerInfo extends React.Component {
                     console.log(body.error);
                 }
             });
-        
+
         fetch(`http://localhost:8081/players/bowling_stats/${id}`)
             .then(res => res.json().then(data => ({ status: res.status, body: data })))
             .then(data => {
@@ -143,7 +143,7 @@ class PlayerInfo extends React.Component {
                     console.log(body.error);
                 }
             });
-        
+
         fetch(`http://localhost:8081/players/bowling_graph/${id}`)
             .then(res => res.json().then(data => ({ status: res.status, body: data })))
             .then(data => {
@@ -195,7 +195,7 @@ class PlayerInfo extends React.Component {
                                     <TabPanel value={this.state.value} index={1}>
                                         <Bowling stats={this.state.bowlingStats} graph={this.state.bowlingGraph} />
                                     </TabPanel>
-        
+
                                 </CardContent>
                             </Card>
                         </Grid>

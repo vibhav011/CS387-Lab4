@@ -54,8 +54,9 @@ function ScorecardElement(props) {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1bh-content"
                 id="panel1bh-inner-header"
+                sx={{ backgroundColor: '#fff'}}
             >
-                <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold" }}>
+                <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", color:"#4e4e4e" }}>
                     Innings 1
                 </Typography>
             </AccordionSummary>
@@ -71,8 +72,9 @@ function ScorecardElement(props) {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1bh-content"
                 id="panel1bh-inner-header3"
+                sx={{ backgroundColor: '#fff'}}
             >
-                <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold" }}>
+                <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", color:"#4e4e4e" }}>
                     Innings 2
                 </Typography>
             </AccordionSummary>
@@ -88,8 +90,9 @@ function ScorecardElement(props) {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1bh-content"
                 id="panel1bh-inner-header3"
+                sx={{ backgroundColor: '#fff'}}
             >
-                <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold" }}>
+                <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", color:"#4e4e4e" }}>
                     Match Info
                 </Typography>
             </AccordionSummary>

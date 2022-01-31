@@ -19,13 +19,52 @@ import ScorecardElement from "./scorecard";
 import ScoreComparisonElement from "./scoreComparison";
 import Card from '@mui/material/Card';
 import Summary from "./summary";
-import { CardContent } from "@mui/material";
+import { CardContent, CardHeader } from "@mui/material";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import PropTypes from 'prop-types';
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+    console.log("tabpanel props", props);
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 
 class MatchInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            expanded: 'panel1',
+            value: 0,
+            teams: "Team1 vs Team2",
+            year: "Year",
             b2data: {},
             b3data: {},
             b4data: {},
@@ -49,7 +88,10 @@ class MatchInfo extends React.Component {
 
                 if (data.status === 200) {
                     console.log(body);
-                    this.setState({ b2data: body });
+                    let info = body.match_info.info[0];
+                    this.setState({ b2data: body,
+                                    teams: info.team1_name + " vs " + info.team2_name,
+                                    year: info.year_of_playing });
                 }
                 else {
                     console.log("Error in scorecard fetch");
@@ -103,8 +145,12 @@ class MatchInfo extends React.Component {
             });
     }
 
-    handleChange = (panel) => (event, isExpanded) => {
-        this.setState({ expanded: isExpanded ? panel : false });
+    // handleChange = (panel) => (event, isExpanded) => {
+    //     this.setState({ expanded: isExpanded ? panel : false });
+    // };
+    handleChange = (event, newValue) => {
+        // setValue(newValue);
+        this.setState({ value: newValue });
     };
 
     render() {
@@ -117,7 +163,34 @@ class MatchInfo extends React.Component {
                 <MKBox component="section" py={{ xs: 3, md: 3 }}>
                     <Container>
                         <Grid container alignItems="center" justifyContent="center">
-                            <Accordion expanded={this.state.expanded === 'panel1'} onChange={this.handleChange('panel1')} sx={{ borderRadius: '10px', width: "85%" }}>
+                            <Card sx={{ borderRadius: '10px', width: "85%" }}>
+                                <CardHeader disableTypography={true}
+                                    title={<Typography variant="h3">{this.state.teams}</Typography>}
+                                    subheader={<Typography sx={{ color: "#52575e" }} variant="h4">{this.state.year}</Typography>} />
+
+                                <CardContent>
+                                    {/* <Typography variant="h6" sx={{ marginTop: "-15px", color: "#52575e" }}>Batting Hand: {this.state.basic_info.batting_hand}</Typography>
+                                    <Typography gutterBottom variant="h6" sx={{ marginTop: "-5px", color: "#52575e" }}>Bowling Skill: {this.state.basic_info.bowling_skill}</Typography> */}
+
+                                    <Tabs value={this.state.value} onChange={this.handleChange} aria-label="basic tabs example">
+                                        <Tab label="Scorecard" {...a11yProps(0)} />
+                                        <Tab label="Score Comparison" {...a11yProps(1)} />
+                                        <Tab label="Summary" {...a11yProps(2)} />
+                                    </Tabs>
+
+                                    <TabPanel value={this.state.value} index={0}>
+                                        <ScorecardElement data={this.state.b2data} />
+                                    </TabPanel>
+                                    <TabPanel value={this.state.value} index={1}>
+                                        <ScoreComparisonElement data={this.state.b3data} />
+                                    </TabPanel>
+                                    <TabPanel value={this.state.value} index={2}>
+                                        <Summary data={this.state.b4data} pie={this.state.b4pie} />
+                                    </TabPanel>
+        
+                                </CardContent>
+                            </Card>
+                            {/* <Accordion expanded={this.state.expanded === 'panel1'} onChange={this.handleChange('panel1')} sx={{ borderRadius: '10px', width: "85%" }}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
                                     aria-controls="panel1bh-content"
@@ -129,7 +202,9 @@ class MatchInfo extends React.Component {
                                     </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <ScorecardElement data={this.state.b2data} />
+                                    <Card sx={{ marginLeft: 'auto', marginRight: 'auto', paddingLeft: '5px', paddingTop: '20px', width: '800px', height: '425px' }}>
+                                        <ScoreComparisonElement data={this.state.b3data} />
+                                    </Card>
                                 </AccordionDetails>
                             </Accordion>
 
@@ -165,7 +240,7 @@ class MatchInfo extends React.Component {
                                 <AccordionDetails>
                                     <Summary data={this.state.b4data} pie={this.state.b4pie} />
                                 </AccordionDetails>
-                            </Accordion>
+                            </Accordion> */}
                         </Grid>
                     </Container>
                 </MKBox>
