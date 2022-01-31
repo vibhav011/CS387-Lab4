@@ -16,7 +16,7 @@ function get_basic_info(db_client, request, response) { // request and response 
         response.status(200).json({ data: ret_json })
       }
     })
-  }
+}
   
-  module.exports = get_basic_info;
+module.exports = get_basic_info;
 
