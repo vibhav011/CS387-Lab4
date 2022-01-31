@@ -16,6 +16,7 @@ import routes from "routes";
 import Matches from "components/Matches";
 import Features from "layouts/sections/page-sections/featuers";
 import MatchInfo from "components/MatchInfo";
+import PlayerInfo from "components/PlayerInfo";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -47,6 +48,7 @@ export default function App() {
         {/* {getRoutes(routes)} */}
         <Route path="/match/:id" element={<MatchInfo />} />
         <Route path="/matches*" element={<Matches />} />
+        <Route path="/players/:id" element={<PlayerInfo />} />
         <Route path="/presentation" element={<Presentation />} />
         <Route path="*" element={<Navigate to="/presentation" />} />
       </Routes>
