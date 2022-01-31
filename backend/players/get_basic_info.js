@@ -2,7 +2,7 @@ function get_basic_info(db_client, request, response) { // request and response 
     var ret_json = null
     var player_id = parseInt(request.params.player_id);
     if (!player_id) {
-      response.status(400).json({ error: 'match_id must be an integer' })
+      response.status(400).json({ error: 'player_id must be an integer' })
       return
     }
     const query = 'select player_name, batting_hand, bowling_skill, country_name from player where player_id = $1'

@@ -67,6 +67,16 @@ app.get('/players/basic_info/:player_id', function (request, response) {
   get_basic_info(db_client, request, response);
 })
 
+const get_batting_stats = require('./players/get_batting_stats.js');
+app.get('/players/batting_stats/:player_id', function (request, response) {
+  get_batting_stats(db_client, request, response);
+})
+
+const get_bowling_stats = require('./players/get_bowling_stats.js');
+app.get('/players/bowling_stats/:player_id', function (request, response) {
+  get_bowling_stats(db_client, request, response);
+})
+
 
 var server = app.listen(8081, function () {
   var host = server.address().address
