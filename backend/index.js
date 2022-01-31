@@ -62,6 +62,12 @@ app.get('/matches/pie_chart/:match_id', function (request, response) {
   get_pie_chart(db_client, request, response);
 })
 
+const get_basic_info = require('./players/get_basic_info.js');
+app.get('/players/basic_info/:player_id', function (request, response) {
+  get_basic_info(db_client, request, response);
+})
+
+
 var server = app.listen(8081, function () {
   var host = server.address().address
   var port = server.address().port
