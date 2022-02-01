@@ -87,6 +87,11 @@ app.get('/players/bowling_graph/:player_id', function (request, response) {
   get_bowling_graph(db_client, request, response);
 })
 
+const get_pointstable = require('./pointstable/get_pointstable.js');
+app.get('/pointstable/:year', function (request, response) {
+  get_pointstable(db_client, request, response);
+})
+
 var server = app.listen(8081, function () {
   var host = server.address().address
   var port = server.address().port
