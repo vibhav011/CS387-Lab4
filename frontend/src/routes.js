@@ -69,8 +69,8 @@ const routes = [
   {
     name: "points",
     icon: <ScoreRounded />,
-    route: "/sections/page-sections/features",
-    component: <Features />,
+    route: "/pointstable/2017",
+    // component: <Features />,
   },
   {
     name: "venues",
