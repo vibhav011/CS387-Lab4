@@ -98,9 +98,20 @@ app.get('/venues', function (request, response) {
 })
 
 const get_venue_basic_info = require('./venues/get_venue_basic_info.js');
-app.get('/venues/:venue_id', function (request, response) {
+app.get('/venues/basic_info/:venue_id', function (request, response) {
   get_venue_basic_info(db_client, request, response);
 })
+
+const get_venue_pie_chart = require('./venues/get_venue_pie_chart.js');
+app.get('/venues/pie_chart/:venue_id', function (request, response) {
+  get_venue_pie_chart(db_client, request, response);
+})
+
+const get_venue_first_innings= require('./venues/get_venue_first_innings.js');
+app.get('/venues/venue_first_innings/:venue_id', function (request, response) {
+  get_venue_first_innings(db_client, request, response);
+})
+
 
 var server = app.listen(8081, function () {
   var host = server.address().address
