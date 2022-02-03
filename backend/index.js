@@ -62,9 +62,9 @@ app.get('/matches/pie_chart/:match_id', function (request, response) {
   get_pie_chart(db_client, request, response);
 })
 
-const get_basic_info = require('./players/get_basic_info.js');
+const get_player_basic_info = require('./players/get_player_basic_info.js');
 app.get('/players/basic_info/:player_id', function (request, response) {
-  get_basic_info(db_client, request, response);
+  get_player_basic_info(db_client, request, response);
 })
 
 const get_batting_stats = require('./players/get_batting_stats.js');
@@ -90,6 +90,16 @@ app.get('/players/bowling_graph/:player_id', function (request, response) {
 const get_pointstable = require('./pointstable/get_pointstable.js');
 app.get('/pointstable/:year', function (request, response) {
   get_pointstable(db_client, request, response);
+})
+
+const get_venues = require('./venues/get_venues.js');
+app.get('/venues', function (request, response) {
+  get_venues(db_client, request, response);
+})
+
+const get_venue_basic_info = require('./venues/get_venue_basic_info.js');
+app.get('/venues/:venue_id', function (request, response) {
+  get_venue_basic_info(db_client, request, response);
 })
 
 var server = app.listen(8081, function () {
