@@ -2,6 +2,7 @@ var express = require('express');
 var cors = require('cors');
 const path = require('path')
 var app = express();
+var bodyParser = require('body-parser');
 app.use(express.static('public'));
 
 // allowing cors
@@ -117,6 +118,8 @@ app.get('/venues/add', function (request, response) {
   get_form(db_client, request, response);
 })
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json())
 const post_form= require('./venues/post_form.js');
 app.post('/venues/add', function (request, response) {
   post_form(db_client, request, response);
