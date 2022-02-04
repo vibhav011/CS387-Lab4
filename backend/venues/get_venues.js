@@ -1,7 +1,7 @@
 function get_venues(db_client, request, response) { // request and response are parts of the http get method
     var ret_json = null
 
-    const query = 'select venue_name from venue'
+    const query = 'select * from venue'
 
     db_client.query(query, (err, res) => {
       if (err) {

@@ -8,9 +8,9 @@ function get_venue_pie_chart(db_client, request, response) { // request and resp
     }
 
     const query = 'select *, 0 as num_drawn from (select coalesce((select count(match_id) from match where ((match_winner = toss_winner and toss_name = \'bat\') \
-    or (match_winner != toss_winner and toss_name = \'field\')) and venue_id = $1 group by venue_id), 0) as num_batting_first_won) bat, \
+    or (match_winner != toss_winner and toss_name = \'field\')) and venue_id = $1 group by venue_id), 0) as num_batting_first_won) bat_first, \
     (select coalesce((select count(match_id) from match where ((match_winner = toss_winner and toss_name = \'field\') \
-    or (match_winner != toss_winner and toss_name = \'bat\')) and venue_id = $1 group by venue_id), 0) as num_bowling_first_won) bowl '    
+    or (match_winner != toss_winner and toss_name = \'bat\')) and venue_id = $1 group by venue_id), 0) as num_batting_second_won) bat_second'    
 
     db_client.query(query, [venue_id], (err, res) => {
       if (err) {
