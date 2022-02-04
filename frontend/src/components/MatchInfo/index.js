@@ -68,7 +68,7 @@ class MatchInfo extends React.Component {
             b2data: {},
             b3data: {},
             b4data: {},
-            b4pie: {}
+            b4pie: []
         };
     }
 
@@ -105,7 +105,6 @@ class MatchInfo extends React.Component {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    console.log(body);
                     this.setState({ b3data: body });
                 }
                 else {
@@ -120,7 +119,6 @@ class MatchInfo extends React.Component {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    console.log(body);
                     this.setState({ b4data: body });
                 }
                 else {
@@ -135,8 +133,7 @@ class MatchInfo extends React.Component {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    console.log(body);
-                    this.setState({ b4pie: body });
+                    this.setState({ b4pie: body.data });
                 }
                 else {
                     console.log("Error in match_summary fetch");
@@ -190,57 +187,6 @@ class MatchInfo extends React.Component {
         
                                 </CardContent>
                             </Card>
-                            {/* <Accordion expanded={this.state.expanded === 'panel1'} onChange={this.handleChange('panel1')} sx={{ borderRadius: '10px', width: "85%" }}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
-                                    aria-controls="panel1bh-content"
-                                    id="panel1bh-header"
-                                    sx={{ backgroundColor: '#384664', borderRadius: '10px' }}
-                                >
-                                    <Typography sx={{ width: '33%', flexShrink: 0, color: "#fff", fontWeight: "bold" }}>
-                                        Scorecard
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Card sx={{ marginLeft: 'auto', marginRight: 'auto', paddingLeft: '5px', paddingTop: '20px', width: '800px', height: '425px' }}>
-                                        <ScoreComparisonElement data={this.state.b3data} />
-                                    </Card>
-                                </AccordionDetails>
-                            </Accordion>
-
-                            <Accordion expanded={this.state.expanded === 'panel2'} onChange={this.handleChange('panel2')} sx={{ borderRadius: '10px', width: "85%", marginTop: '10px', marginBottom: '10px' }}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
-                                    aria-controls="panel2bh-content"
-                                    id="panel2bh-header"
-                                    sx={{ backgroundColor: '#384664', borderRadius: '10px' }}
-                                >
-                                    <Typography sx={{ width: '33%', flexShrink: 0, color: "#fff", fontWeight: "bold" }}>
-                                        Score Comparison
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Card sx={{ marginLeft: 'auto', marginRight: 'auto', paddingLeft: '5px', paddingTop: '20px', width: '800px', height: '425px' }}>
-                                        <ScoreComparisonElement data={this.state.b3data} />
-                                    </Card>
-                                </AccordionDetails>
-                            </Accordion>
-
-                            <Accordion expanded={this.state.expanded === 'panel3'} onChange={this.handleChange('panel3')} sx={{ borderRadius: '10px', width: "85%" }}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
-                                    aria-controls="panel3bh-content"
-                                    id="panel3bh-header"
-                                    sx={{ backgroundColor: '#384664', borderRadius: '10px' }}
-                                >
-                                    <Typography sx={{ width: '33%', flexShrink: 0, color: "#fff", fontWeight: "bold" }}>
-                                        Summary
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Summary data={this.state.b4data} pie={this.state.b4pie} />
-                                </AccordionDetails>
-                            </Accordion> */}
                         </Grid>
                     </Container>
                 </MKBox>

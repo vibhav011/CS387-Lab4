@@ -24,7 +24,6 @@ const COLORS = ['#0088FE', '#C036C7', '#FFBB28', '#C7363D', '#00C49F', '#FF8042'
 function formatter(pie) {
     let mapping = { "ones": 1, "twos": 2, "threes": 3, "fours": 4, "sixes": 6, "extra_runs": 1 }
     let mapping2 = { "ones": "Ones", "twos": "Twos", "threes": "Threes", "fours": "Fours", "sixes": "Sixes", "extra_runs": "Extras" }
-    pie = pie['data']
     let ind = parseInt(pie[0]['innings_no']) - 1;
 
     let total1 = 0
@@ -93,7 +92,7 @@ function Summary(props) {
     let tables = <CircularProgress />
     let piechart = <CircularProgress />
 
-    if (Object.keys(pie).length !== 0) {
+    if (pie.length !== 0) {
         const piedata = formatter(pie);
         const data1 = piedata.data1;
         const data2 = piedata.data2;
@@ -155,7 +154,7 @@ function Summary(props) {
         </>)
     }
 
-    if (Object.keys(data).length !== 0) {
+    if (data.match_info.length !== 0) {
         const info = data['match_info'][0];
         console.log("info", info);
         acchead = <>
