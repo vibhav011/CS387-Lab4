@@ -2,9 +2,6 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { useSearchParams, useParams } from 'react-router-dom'
 
-// Table
-import CustomTable from "components/CustomTable";
-
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import BaseLayout from "layouts/sections/components/BaseLayout";
@@ -15,15 +12,16 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ScorecardElement from "./scorecard";
-import ScoreComparisonElement from "./scoreComparison";
 import Card from '@mui/material/Card';
-import Summary from "./summary";
+import Summary from "./outline";
 import { CardContent, CardHeader } from "@mui/material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
+import CustomTable2 from "components/CustomTable2";
+import Outline from "./outline";
+import FirstInnings from "./first_innings";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -58,17 +56,23 @@ function a11yProps(index) {
     };
 }
 
-class MatchInfo extends React.Component {
+const jsonKeys = ["venue_name", "address", "capacity", "total_matches_played", "highest_total_recorded", "lowest_total_recorded", "highest_score_chased"];
+
+class VenueInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             value: 0,
-            teams: "Team1 vs Team2",
-            year: "Year",
-            b2data: {},
-            b3data: {},
-            b4data: {},
-            b4pie: []
+            basicInfo: [["Venue name", "Venue Name"],
+                        ["Address", "City"],
+                        ["Capacity", ""],
+                        ["Total matches played", ""],
+                        ["Highest total recorded", ""],
+                        ["Lowest total recorded", ""],
+                        ["Highest score chased", ""]
+                        ],
+            outline: {},
+            first_innings: []
         };
     }
 
@@ -81,17 +85,16 @@ class MatchInfo extends React.Component {
     }
 
     fetchData(id) {
-        fetch(`http://localhost:8081/matches/scorecard/${id}`)
+        fetch(`http://localhost:8081/venues/basic_info/${id}`)
             .then(res => res.json().then(data => ({ status: res.status, body: data })))
             .then(data => {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    console.log(body);
-                    let info = body.match_info.info[0];
-                    this.setState({ b2data: body,
-                                    teams: info.team1_name + " vs " + info.team2_name,
-                                    year: info.year_of_playing });
+                    let info = body.data[0];
+                    let b = this.state.basicInfo;
+                    jsonKeys.map((k, i) => {b[i][1] = info[k]});
+                    this.setState({ basicInfo: b });
                 }
                 else {
                     console.log("Error in scorecard fetch");
@@ -99,13 +102,13 @@ class MatchInfo extends React.Component {
                 }
             });
 
-        fetch(`http://localhost:8081/matches/score_comparison/${id}`)
+        fetch(`http://localhost:8081/venues/pie_chart/${id}`)
             .then(res => res.json().then(data => ({ status: res.status, body: data })))
             .then(data => {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    this.setState({ b3data: body });
+                    this.setState({ outline: body.data[0] });
                 }
                 else {
                     console.log("Error in score_comparison fetch");
@@ -113,30 +116,16 @@ class MatchInfo extends React.Component {
                 }
             });
         
-        fetch(`http://localhost:8081/matches/match_summary/${id}`)
+        fetch(`http://localhost:8081/venues/venue_first_innings/${id}`)
             .then(res => res.json().then(data => ({ status: res.status, body: data })))
             .then(data => {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    this.setState({ b4data: body });
+                    this.setState({ first_innings: body.data });
                 }
                 else {
-                    console.log("Error in match_summary fetch");
-                    console.log(body.error);
-                }
-            });
-        
-        fetch(`http://localhost:8081/matches/pie_chart/${id}`)
-            .then(res => res.json().then(data => ({ status: res.status, body: data })))
-            .then(data => {
-                let body = data.body;
-
-                if (data.status === 200) {
-                    this.setState({ b4pie: body.data });
-                }
-                else {
-                    console.log("Error in match_summary fetch");
+                    console.log("Error in score_comparison fetch");
                     console.log(body.error);
                 }
             });
@@ -152,37 +141,34 @@ class MatchInfo extends React.Component {
 
     render() {
         return (
-            <BaseLayout title="Match Info"
+            <BaseLayout title="Venue Info"
                 breadcrumb={[
                     { label: "Home", route: "/" },
-                    { label: "Match Info" },
+                    { label: "Venue Info" },
                 ]}>
                 <MKBox component="section" py={{ xs: 3, md: 3 }}>
                     <Container>
                         <Grid container alignItems="center" justifyContent="center">
                             <Card sx={{ borderRadius: '10px', width: "85%" }}>
                                 <CardHeader disableTypography={true}
-                                    title={<Typography variant="h3">{this.state.teams}</Typography>}
-                                    subheader={<Typography sx={{ color: "#52575e" }} variant="h4">{this.state.year}</Typography>} />
+                                    title={<Typography variant="h3">{this.state.basicInfo[0][1]}</Typography>}
+                                    subheader={<Typography sx={{ color: "#52575e" }} variant="h4">{this.state.basicInfo[1][1]}</Typography>} />
 
                                 <CardContent>
-                                    {/* <Typography variant="h6" sx={{ marginTop: "-15px", color: "#52575e" }}>Batting Hand: {this.state.basic_info.batting_hand}</Typography>
-                                    <Typography gutterBottom variant="h6" sx={{ marginTop: "-5px", color: "#52575e" }}>Bowling Skill: {this.state.basic_info.bowling_skill}</Typography> */}
-
                                     <Tabs value={this.state.value} onChange={this.handleChange} aria-label="basic tabs example">
-                                        <Tab label="Scorecard" {...a11yProps(0)} />
-                                        <Tab label="Score Comparison" {...a11yProps(1)} />
-                                        <Tab label="Summary" {...a11yProps(2)} />
+                                        <Tab label="Basic Info" {...a11yProps(0)} />
+                                        <Tab label="Outline" {...a11yProps(1)} />
+                                        <Tab label="Average Score" {...a11yProps(2)} />
                                     </Tabs>
 
                                     <TabPanel value={this.state.value} index={0}>
-                                        <ScorecardElement data={this.state.b2data} />
+                                        <CustomTable2 rows={this.state.basicInfo} />
                                     </TabPanel>
                                     <TabPanel value={this.state.value} index={1}>
-                                        <ScoreComparisonElement data={this.state.b3data} />
+                                        <Outline data={this.state.outline} />
                                     </TabPanel>
                                     <TabPanel value={this.state.value} index={2}>
-                                        <Summary data={this.state.b4data} pie={this.state.b4pie} />
+                                        <FirstInnings data={this.state.first_innings} />
                                     </TabPanel>
         
                                 </CardContent>
@@ -195,4 +181,4 @@ class MatchInfo extends React.Component {
     }
 }
 
-export default (props) => (<MatchInfo params={useParams()} />);
+export default (props) => (<VenueInfo params={useParams()} />);
