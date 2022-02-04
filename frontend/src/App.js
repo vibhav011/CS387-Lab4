@@ -18,6 +18,8 @@ import Features from "layouts/sections/page-sections/featuers";
 import MatchInfo from "components/MatchInfo";
 import PlayerInfo from "components/PlayerInfo";
 import PointsTable from "components/PointsTable";
+import VenueInfo from "components/VenueInfo";
+import Venues from "components/Venues";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -51,6 +53,8 @@ export default function App() {
         <Route path="/matches*" element={<Matches />} />
         <Route path="/players/:id" element={<PlayerInfo />} />
         <Route path="/pointstable/:year" element={<PointsTable />} />
+        <Route path="/venue/:id" element={<VenueInfo />} />
+        <Route path="/venues" element={<Venues />} />
         <Route path="/presentation" element={<Presentation />} />
         <Route path="*" element={<Navigate to="/presentation" />} />
       </Routes>

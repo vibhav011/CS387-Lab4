@@ -75,8 +75,8 @@ const routes = [
   {
     name: "venues",
     icon: <Place />,
-    route: "/sections/page-sections/features",
-    component: <Features />,
+    route: "/venues",
+    // component: <Features />,
   },
 ];
 
