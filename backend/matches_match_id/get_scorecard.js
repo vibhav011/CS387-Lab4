@@ -1,6 +1,10 @@
 async function updateRetJSON(db_client, query, params, ret_json, error, key) {
   try {
     res = await db_client.query(query, params)
+    if(res.rows.length === 0) {
+      error.status = 404
+      error.message = "No matching match id found"
+    }
     ret_json[key] = res.rows
   }
   catch (err) {
