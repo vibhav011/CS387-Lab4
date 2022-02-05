@@ -113,11 +113,6 @@ app.get('/venues/venue_first_innings/:venue_id', function (request, response) {
   get_venue_first_innings(db_client, request, response);
 })
 
-const get_form= require('./venues/get_form.js');
-app.get('/venues/add', function (request, response) {
-  get_form(db_client, request, response);
-})
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 const post_form= require('./venues/post_form.js');
