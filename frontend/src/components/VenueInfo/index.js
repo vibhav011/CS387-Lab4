@@ -59,7 +59,7 @@ class VenueInfo extends React.Component {
         this.state = {
             value: 0,
             basicInfo: [["Venue name", "Venue Name"],
-                        ["Address", "City"],
+                        ["Address", "City, Country"],
                         ["Capacity", ""],
                         ["Total matches played", ""],
                         ["Highest total recorded", ""],
@@ -87,8 +87,16 @@ class VenueInfo extends React.Component {
 
                 if (data.status === 200) {
                     let info = body.data[0];
+                    let newInfo = {};
+                    Object.keys(info).map(k => {
+                        if (k !== "city_name" || k !== "country_name")
+                            newInfo[k] = info[k];
+                        return null;
+                    });
+                    newInfo["address"] = `${info["city_name"]}, ${info["country_name"]}`;
+                    console.log(newInfo)
                     let b = this.state.basicInfo;
-                    jsonKeys.map((k, i) => b[i][1] = info[k]);
+                    jsonKeys.map((k, i) => b[i][1] = newInfo[k]);
                     this.setState({ basicInfo: b });
                 }
                 else {
