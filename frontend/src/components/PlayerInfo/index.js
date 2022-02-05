@@ -1,4 +1,4 @@
-import { CardContent, CardHeader } from "@mui/material";
+import { Alert, CardContent, CardHeader, Snackbar } from "@mui/material";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Container from "@mui/material/Container";
@@ -17,7 +17,6 @@ import Bowling from "./bowling";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-    console.log("tabpanel props", props);
     return (
         <div
             role="tabpanel"
@@ -63,9 +62,19 @@ class PlayerInfo extends React.Component {
             battingStats: {},
             battingGraph: -1,
             bowlingStats: {},
-            bowlingGraph: -1
+            bowlingGraph: -1,
+            open: false,
+            msg: "Error"
         };
     }
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState({ open: false });
+    };
 
     componentDidMount() {
         const { id } = this.props.params;
@@ -85,6 +94,7 @@ class PlayerInfo extends React.Component {
                     this.setState({ basic_info: body.data[0] });
                 }
                 else {
+                    this.setState({ open: true, msg: `Error ${data.status}: ${body.error}` });
                     console.log("Error in scorecard fetch");
                     console.log(body.error);
                 }
@@ -161,6 +171,11 @@ class PlayerInfo extends React.Component {
                 <MKBox component="section" py={{ xs: 3, md: 3 }}>
                     <Container>
                         <Grid container alignItems="center" justifyContent="center">
+                            <Snackbar open={this.state.open} onClose={this.handleClose}>
+                                <Alert onClose={this.handleClose} severity="error" sx={{ width: '100%' }}>
+                                    {this.state.msg}
+                                </Alert>
+                            </Snackbar>
                             <Card sx={{ borderRadius: '10px', width: "85%" }}>
                                 <CardHeader disableTypography={true}
                                     title={<Typography variant="h2">{this.state.basic_info.player_name}</Typography>}

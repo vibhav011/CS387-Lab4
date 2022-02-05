@@ -18,7 +18,6 @@ import Summary from "./summary";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-    console.log("tabpanel props", props);
     return (
         <div
             role="tabpanel"
@@ -78,7 +77,6 @@ class MatchInfo extends React.Component {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    console.log(body);
                     let info = body.match_info.info[0];
                     this.setState({ b2data: body,
                                     teams: info.team1_name + " vs " + info.team2_name,
@@ -132,10 +130,6 @@ class MatchInfo extends React.Component {
                 }
             });
     }
-
-    // handleChange = (panel) => (event, isExpanded) => {
-    //     this.setState({ expanded: isExpanded ? panel : false });
-    // };
     handleChange = (event, newValue) => {
         // setValue(newValue);
         this.setState({ value: newValue });
