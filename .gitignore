@@ -123,6 +123,7 @@ web_modules/
 
 # dotenv environment variable files
 .env
+!190050125-190050128-lab4/backend/.env
 .env.development.local
 .env.test.local
 .env.production.local
