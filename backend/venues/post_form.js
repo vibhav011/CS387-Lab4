@@ -13,7 +13,7 @@ function post_form(db_client, request, response) { // request and response are p
     (nextval(\'venues_seq\'), $1, $2, $3, $4);'
 
     const qlist = [request.body.venue_name, request.body.city_name, request.body.country_name, capacity]
-    if (qlist.includes(undefined)) {
+    if (qlist.includes(undefined) || qlist.includes("")) {
       response.status(400).json({ error: 'venue_name, city_name, country_name, and capacity are required' })
       return
     }
