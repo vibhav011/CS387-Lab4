@@ -51,7 +51,7 @@ Coded by www.creative-tim.com
 // Sections
 // import PageHeaders from "layouts/sections/page-sections/page-headers";
 import Features from "layouts/sections/page-sections/featuers";
-import { CreditScore, CreditScoreTwoTone, Place, ScoreOutlined, ScoreRounded, SportsCricket, SportsHandball, SportsScore } from "@mui/icons-material";
+import { AddLocationAlt, CreditScore, CreditScoreTwoTone, Place, ScoreOutlined, ScoreRounded, SportsCricket, SportsHandball, SportsScore } from "@mui/icons-material";
 
 const routes = [
   {
@@ -59,12 +59,6 @@ const routes = [
     icon: <SportsCricket />,
     route: "/matches?skip=0&limit=10",
     // component: <Matches />,
-  },
-  {
-    name: "players",
-    icon: <SportsHandball />,
-    route: "/match/200",
-    // component: <Features />,
   },
   {
     name: "points",
@@ -76,6 +70,12 @@ const routes = [
     name: "venues",
     icon: <Place />,
     route: "/venues",
+    // component: <Features />,
+  },
+  {
+    name: "add venue",
+    icon: <AddLocationAlt />,
+    route: "/venues/add",
     // component: <Features />,
   },
 ];

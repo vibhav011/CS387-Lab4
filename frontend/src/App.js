@@ -20,6 +20,7 @@ import PlayerInfo from "components/PlayerInfo";
 import PointsTable from "components/PointsTable";
 import VenueInfo from "components/VenueInfo";
 import Venues from "components/Venues";
+import VenueAdd from "components/Venues/new_venue";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="/pointstable/:year" element={<PointsTable />} />
         <Route path="/venue/:id" element={<VenueInfo />} />
         <Route path="/venues" element={<Venues />} />
+        <Route path="/venues/add" element={<VenueAdd />} />
         <Route path="/presentation" element={<Presentation />} />
         <Route path="*" element={<Navigate to="/presentation" />} />
       </Routes>
