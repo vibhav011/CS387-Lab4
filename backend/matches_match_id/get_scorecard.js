@@ -79,7 +79,7 @@ async function get_extras(db_client, match_id, innings_no, ret_json, error) {
 
 async function get_score(db_client, match_id, innings_no, ret_json, error) {
   const query = 'select sum(runs_scored)+sum(extra_runs) as runs, count(wickets) as wickets from (select runs_scored, extra_runs, \
-  case when out_type != \'run out\' and out_type != \'retired hurt\' and out_type is not NULL then 1 end wickets \
+  case when out_type is not NULL then 1 end wickets \
   from ball_by_ball where match_id = $1 and innings_no = $2) ball_info'
   await updateRetJSON(db_client, query, [match_id, innings_no], ret_json, error, 'score')
 }
