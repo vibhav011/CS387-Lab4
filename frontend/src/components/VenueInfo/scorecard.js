@@ -1,11 +1,10 @@
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CustomTable2 from 'components/CustomTable2';
-import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
+import CustomTable2 from 'components/CustomTable2';
 
 const headers_bat = [
     'Batter', 'Runs', 'Fours', 'Sixes', 'Balls faced'
@@ -21,7 +20,7 @@ const json_keys = {
 function formatter(data, inn, bat) {
     return data[inn][bat].map((d) => {
         return json_keys[bat].map((k, i) => {
-            return (i == 0) ? <a href={"/players/"+d["player_id"]} style={{ color: "#3d82cc", fontWeight: "bold" }}>{d[k]}</a> : d[k]
+            return (i === 0) ? <a href={"/players/"+d["player_id"]} style={{ color: "#3d82cc", fontWeight: "bold" }}>{d[k]}</a> : d[k]
         })
     });
 }

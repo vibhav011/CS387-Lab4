@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Dot, Label } from 'recharts';
 import CircularProgress from '@mui/material/CircularProgress';
+import React from 'react';
+import { CartesianGrid, Dot, Label, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 function renderDot(props) {
     const { cx, cy, dataKey, stroke, payload } = props;
@@ -23,13 +23,14 @@ function formatter(data) {
             name: i + 1,
             innings1: sum,
             team1_wicket: element['wicket']
-        });
+        }); return null;
     });
     sum = 0;
     data['innings2'].map((element, i) => {
         sum += parseInt(element['runs']);
         newData[i]['innings2'] = sum;
         newData[i]['team2_wicket'] = element['wicket'];
+        return null;
     });
     return newData;
 }

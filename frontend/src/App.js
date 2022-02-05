@@ -1,26 +1,19 @@
-import { useEffect } from "react";
-
-// react-router components
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-
+import CssBaseline from "@mui/material/CssBaseline";
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-
 // Material Kit 2 React themes
 import theme from "assets/theme";
-import Presentation from "layouts/pages/presentation";
-
-// Material Kit 2 React routes
-import routes from "routes";
 import Matches from "components/Matches";
-import Features from "layouts/sections/page-sections/featuers";
 import MatchInfo from "components/MatchInfo";
 import PlayerInfo from "components/PlayerInfo";
 import PointsTable from "components/PointsTable";
 import VenueInfo from "components/VenueInfo";
 import Venues from "components/Venues";
 import VenueAdd from "components/Venues/new_venue";
+import Presentation from "layouts/pages/presentation";
+import { useEffect } from "react";
+// react-router components
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -31,25 +24,10 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const getRoutes = (allRoutes) =>
-    allRoutes.map((route) => {
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
-
-      if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
-      }
-
-      return null;
-    });
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Routes>
-        
-        {/* {getRoutes(routes)} */}
         <Route path="/match/:id" element={<MatchInfo />} />
         <Route path="/matches*" element={<Matches />} />
         <Route path="/players/:id" element={<PlayerInfo />} />

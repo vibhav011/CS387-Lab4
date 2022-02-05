@@ -1,11 +1,11 @@
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-
+import CustomTable2 from "components/CustomTable2";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import BaseLayout from "layouts/sections/components/BaseLayout";
 import { useEffect, useState } from "react";
-import CustomTable2 from "components/CustomTable2";
+
 
 const headers = [
   'Venue Details'

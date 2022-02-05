@@ -1,28 +1,22 @@
+import { CardContent, CardHeader } from "@mui/material";
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import { useSearchParams, useParams } from 'react-router-dom'
-
-// Table
-import CustomTable from "components/CustomTable";
-
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import BaseLayout from "layouts/sections/components/BaseLayout";
-import React from "react";
-
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Card from '@mui/material/Card';
-import { CardContent, CardHeader } from "@mui/material";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
+import React from "react";
+import { useParams } from 'react-router-dom';
 import Batting from "./batting";
 import Bowling from "./bowling";
+
+
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -205,5 +199,5 @@ class PlayerInfo extends React.Component {
         );
     }
 }
-
-export default (props) => (<PlayerInfo params={useParams()} />);
+const NewPlayerInfo = (props) => (<PlayerInfo params={useParams()} />);
+export default NewPlayerInfo;

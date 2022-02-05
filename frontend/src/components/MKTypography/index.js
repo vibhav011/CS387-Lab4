@@ -13,13 +13,13 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { forwardRef } from "react";
-
-// prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
-
 // Custom styles for MKTypography
 import MKTypographyRoot from "components/MKTypography/MKTypographyRoot";
+// prop-types is a library for typechecking of props
+import PropTypes from "prop-types";
+import { forwardRef } from "react";
+
+
 
 const MKTypography = forwardRef(
   (

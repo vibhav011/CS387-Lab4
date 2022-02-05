@@ -1,20 +1,10 @@
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CustomTable2 from 'components/CustomTable2';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import RectangleIcon from '@mui/icons-material/Rectangle';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
-import { ConstructionOutlined } from '@mui/icons-material';
-
-const headers = [
-    'Batsman', '', 'Bowler', ''
-]
+import Typography from '@mui/material/Typography';
+import CustomTable2 from 'components/CustomTable2';
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
 const legendNames = [
     "Team batting 1st won", "Team batting 2nd won", "Draw"

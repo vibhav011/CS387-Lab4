@@ -1,33 +1,17 @@
+import { Box, Button, Card, TextField } from "@mui/material";
+import MuiAlert from '@mui/material/Alert';
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-
+import Snackbar from '@mui/material/Snackbar';
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import BaseLayout from "layouts/sections/components/BaseLayout";
-import { useEffect, useState, forwardRef } from "react";
-import CustomTable2 from "components/CustomTable2";
-import { Box, Card, TextField, Button } from "@mui/material";
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import { forwardRef, useState } from "react";
+
 
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
-
-const headers = [
-    'Venue Details'
-]
-
-function formatter(venue) {
-    return [
-        <>
-            <a href={"/venue/" + venue.venue_id} style={{ color: "#3d82cc", fontWeight: "bold" }}>
-                {venue.venue_name}
-            </a>
-            <p style={{ color: "#6e6867", fontSize: "15px" }}>[{venue.city_name}, {venue.country_name}]</p>
-        </>
-    ];
-}
 
 function VenueAdd(props) {
     const [venue_name, setVenueName] = useState("");
@@ -96,9 +80,9 @@ function VenueAdd(props) {
             ]}>
             <MKBox component="section" py={{ xs: 3, md: 3 }}>
                 <Container>
-                    <Grid container alignItems="center" justifyContent="center">
+                    <Grid container alignItems="center" justifyContent="center" minHeight="70vh">
                         <Grid item xs={12} lg={9}>
-                            <Card sx={{ padding: 5 }}>
+                            <Card sx={{ padding: 5, width:"60%", marginLeft:'auto', marginRight:'auto', marginTop:-20 }}>
                                 <Box sx={{ alignItems: 'center' }}>
                                     <TextField margin="dense" fullWidth id="venue-name" label="Venue Name" value={venue_name} onChange={(e) => handleChange(e, setVenueName)} variant="outlined" />
                                     <br /><TextField margin="dense" sx={{ width: "49%" }} id="city" label="City" value={city} onChange={(e) => handleChange(e, setCity)} variant="outlined" />

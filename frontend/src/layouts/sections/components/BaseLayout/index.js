@@ -14,24 +14,19 @@ Coded by www.creative-tim.com
 */
 
 // prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
-
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-
+import Breadcrumbs from "examples/Breadcrumbs";
+import CenteredFooter from "examples/Footers/CenteredFooter";
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-import CenteredFooter from "examples/Footers/CenteredFooter";
-import Breadcrumbs from "examples/Breadcrumbs";
-
+import PropTypes from "prop-types";
 // Routes
 import routes from "routes";
-
 function BaseLayout({ breadcrumb, title, children }) {
   return (
     <MKBox display="flex" flexDirection="column" bgColor="white" minHeight="100vh">
@@ -59,7 +54,7 @@ function BaseLayout({ breadcrumb, title, children }) {
           {children}
         </Grid>
       </Container>
-      <MKBox mt="auto">
+      <MKBox mb={0} sx={{bottom:0, top:'auto', backgroundColor:"#ab9371"}}>
         <CenteredFooter />
       </MKBox>
     </MKBox>

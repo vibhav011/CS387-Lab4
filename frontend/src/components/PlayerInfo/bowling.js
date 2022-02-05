@@ -1,7 +1,7 @@
-import React from 'react';
-import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, ComposedChart, Bar, Line, Cell } from 'recharts';
 import CircularProgress from '@mui/material/CircularProgress';
 import CustomTable2 from 'components/CustomTable2';
+import React from 'react';
+import { Bar, CartesianGrid, ComposedChart, Label, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 const bowlingHeader = [
     "Matches", "Runs", "Balls", "Overs", "Wickets", "Economy", "Five Wickets"
 ]
@@ -10,7 +10,7 @@ const jsonKeys = [
 ]
 
 function CustomizedLabel(props) {
-      const { x, y, stroke, value } = props;
+      const { x, y, value } = props;
   
       return (
     //     <div style={{left:x, top:y-10, fontSize:20, position: "absolute", backgroundColor:"#fff", zIndex:10000}}>

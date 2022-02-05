@@ -1,19 +1,19 @@
+import { CardContent } from "@mui/material";
+import Card from '@mui/material/Card';
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import { useParams } from 'react-router-dom'
-
+import TextField from '@mui/material/TextField';
 // Table
 import CustomTable2 from "components/CustomTable2";
-
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import BaseLayout from "layouts/sections/components/BaseLayout";
 import React, { useEffect } from "react";
+import { useParams } from 'react-router-dom';
 
-import Card from '@mui/material/Card';
-import { CardContent } from "@mui/material";
 
-import TextField from '@mui/material/TextField';
+
+
 
 const header = [
     'Team Name', 'Mat', 'Won', 'Lost', 'Tied', 'NR', 'Points'
@@ -25,11 +25,11 @@ const json_keys = [
 function formatter(data) {
     return data.map((d) => {
         return json_keys.map((k, i) => {
-            if (k == "nr") {
+            if (k === "nr") {
                 let u = parseFloat(d[k]) > 0
                 return <text style = {{color: u?"green":"red"}}>{u ? '+' + d[k] : d[k]}</text>;
             }
-            if (k == "team_name") return <b>{d[k]}</b>
+            if (k === "team_name") return <b>{d[k]}</b>
             return d[k];
         })
     });
@@ -41,7 +41,7 @@ function PointsTable(props) {
 
     useEffect(() => {
         fetchData(year);
-    }, []);
+    }, [year]);
 
     const fetchData = (year) => {
         setRows([["Loading...", "", "", "", "", "", ""]]);

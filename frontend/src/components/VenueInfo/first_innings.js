@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Dot, Label } from 'recharts';
 import CircularProgress from '@mui/material/CircularProgress';
+import React from 'react';
+import { CartesianGrid, Dot, Label, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 function renderDot(props) {
-    const { cx, cy, dataKey, stroke, payload } = props;
+    const { cx, cy, stroke } = props;
     return (
         <Dot cx={cx} cy={cy} r={5} fill={stroke} />
     )

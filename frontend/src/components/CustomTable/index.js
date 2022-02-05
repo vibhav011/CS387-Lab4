@@ -1,4 +1,4 @@
-import * as React from 'react';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,11 +6,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
+import * as React from 'react';
 import { useNavigate } from "react-router-dom";
 // CSS
 import './index.css';
+
 
 export default function CustomTable(props) {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ export default function CustomTable(props) {
     </TableFooter>
   }
   return (
-    <TableContainer component={Paper} sx={{ marginLeft: "auto", marginRight: "auto", overflowX: "scroll" }}>
+    <TableContainer component={Paper} sx={{ marginLeft: "auto", marginRight: "auto", marginBottom: 0, overflowX: "scroll" }}>
       <Table aria-label="simple table">
         <TableBody>
           {Header}

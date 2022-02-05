@@ -1,27 +1,22 @@
+import { CardContent, CardHeader } from "@mui/material";
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import { useSearchParams, useParams } from 'react-router-dom'
-
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
+import CustomTable2 from "components/CustomTable2";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import BaseLayout from "layouts/sections/components/BaseLayout";
-import React from "react";
-
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Card from '@mui/material/Card';
-import Summary from "./outline";
-import { CardContent, CardHeader } from "@mui/material";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
-import CustomTable2 from "components/CustomTable2";
-import Outline from "./outline";
+import React from "react";
+import { useParams } from 'react-router-dom';
 import FirstInnings from "./first_innings";
+import Outline from "./outline";
+
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -93,7 +88,7 @@ class VenueInfo extends React.Component {
                 if (data.status === 200) {
                     let info = body.data[0];
                     let b = this.state.basicInfo;
-                    jsonKeys.map((k, i) => {b[i][1] = info[k]});
+                    jsonKeys.map((k, i) => b[i][1] = info[k]);
                     this.setState({ basicInfo: b });
                 }
                 else {
@@ -181,4 +176,5 @@ class VenueInfo extends React.Component {
     }
 }
 
-export default (props) => (<VenueInfo params={useParams()} />);
+const NewVenueInfo = (props) => (<VenueInfo params={useParams()} />);
+export default NewVenueInfo;

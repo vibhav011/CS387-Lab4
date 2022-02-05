@@ -1,7 +1,7 @@
-import React from 'react';
-import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, BarChart, Bar, Cell } from 'recharts';
 import CircularProgress from '@mui/material/CircularProgress';
 import CustomTable2 from 'components/CustomTable2';
+import React from 'react';
+import { Bar, BarChart, CartesianGrid, Cell, Label, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 const battingHeader = [
     "Matches", "Runs", "Four", "Six", "Fifty", "HS", "Strike Rate", "Average"
 ]

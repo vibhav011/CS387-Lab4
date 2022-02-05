@@ -1,16 +1,15 @@
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CustomTable2 from 'components/CustomTable2';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import RectangleIcon from '@mui/icons-material/Rectangle';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import RectangleIcon from '@mui/icons-material/Rectangle';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 import CircularProgress from '@mui/material/CircularProgress';
-import { ConstructionOutlined } from '@mui/icons-material';
+import Typography from '@mui/material/Typography';
+import CustomTable2 from 'components/CustomTable2';
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
 const headers = [
     'Batsman', '', 'Bowler', ''
@@ -28,7 +27,7 @@ function formatter(pie) {
 
     let total1 = 0
     let data1 = Object.keys(pie[ind]).map(key => {
-        if (mapping[key] != undefined) {
+        if (mapping[key] !== undefined) {
             let x = mapping[key] * parseInt(pie[ind][key])
             total1 += x
             return {
@@ -36,11 +35,12 @@ function formatter(pie) {
                 value: x
             }
         }
-    }).filter((e) => e != undefined);
+        return null;
+    }).filter((e) => e !== null);
 
     let total2 = 0
     let data2 = Object.keys(pie[1 - ind]).map(key => {
-        if (mapping[key] != undefined) {
+        if (mapping[key] !== undefined) {
             let x = mapping[key] * parseInt(pie[1 - ind][key])
             total2 += x
             return {
@@ -48,7 +48,8 @@ function formatter(pie) {
                 value: x
             }
         }
-    }).filter((e) => e != undefined);
+        return null;
+    }).filter((e) => e !== null);
 
     return { data1: data1, data2: data2, total1: total1, total2: total2 };
 }

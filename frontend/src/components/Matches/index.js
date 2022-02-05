@@ -1,14 +1,14 @@
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import { useSearchParams } from 'react-router-dom'
-
 // Table
 import CustomTable from "components/CustomTable";
-
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import BaseLayout from "layouts/sections/components/BaseLayout";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { useSearchParams } from 'react-router-dom';
+
+
 
 const headers = [
   'Season Year',
@@ -31,7 +31,7 @@ function Matches(props) {
   const [skipHook, setSkip] = useState(-1);
   const [limitHook, setLimit] = useState(-1);
   const [rows, setRows] = useState([["Loading...", ""]]);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const skip = searchParams.get("skip") || 0;
   const limit = searchParams.get("limit") || 10;
 

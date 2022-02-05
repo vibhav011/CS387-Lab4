@@ -50,8 +50,7 @@ Coded by www.creative-tim.com
 
 // Sections
 // import PageHeaders from "layouts/sections/page-sections/page-headers";
-import Features from "layouts/sections/page-sections/featuers";
-import { AddLocationAlt, CreditScore, CreditScoreTwoTone, Place, ScoreOutlined, ScoreRounded, SportsCricket, SportsHandball, SportsScore } from "@mui/icons-material";
+import { AddLocationAlt, Place, ScoreRounded, SportsCricket } from "@mui/icons-material";
 
 const routes = [
   {
