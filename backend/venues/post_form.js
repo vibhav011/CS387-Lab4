@@ -12,7 +12,12 @@ function post_form(db_client, request, response) { // request and response are p
     VALUES \
     (nextval(\'venues_seq\'), $1, $2, $3, $4);'
 
-    db_client.query(query, [request.body.venue_name, request.body.city_name, request.body.country_name, capacity], (err, res) => {
+    const qlist = [request.body.venue_name, request.body.city_name, request.body.country_name, capacity]
+    if (qlist.includes(undefined)) {
+      response.status(400).json({ error: 'venue_name, city_name, country_name, and capacity are required' })
+      return
+    }
+    db_client.query(query, qlist, (err, res) => {
       if (err) {
         console.log(err)
         response.status(500).json({ error: err.message })
