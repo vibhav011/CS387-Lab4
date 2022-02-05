@@ -24,7 +24,7 @@ function formatter(data) {
 
 function FirstInnings(props) {
     // let data = props.data;
-    if (Object.keys(props.data).length === 0) {
+    if (props.data === -1) {
         return (<><CircularProgress /></>)
     }
 

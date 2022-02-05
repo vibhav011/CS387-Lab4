@@ -66,7 +66,7 @@ class VenueInfo extends React.Component {
             ["Highest score chased", ""]
             ],
             outline: {},
-            first_innings: [],
+            first_innings: -1,
             open: false,
             msg: "Error"
         };

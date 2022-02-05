@@ -15,7 +15,7 @@ function get_venue_first_innings(db_client, request, response) { // request and 
       if (err) {
         console.log(err)
         response.status(500).json({ error: err.message })
-      } else if (res.rows.length === 0) {
+      } else if (res.rows.length === 0 && false) {
         response.status(404).json({ error: 'No matching venue found' })
       } else {
         ret_json = res.rows

@@ -93,15 +93,16 @@ function Summary(props) {
     let tables = <CircularProgress />
     let piechart = <CircularProgress />
 
-    if (pie.length !== 0) {
-        const piedata = formatter(pie);
+    if (Object.keys(pie).length !== 0) {
+        const piedata = formatter(pie.data);
         const data1 = piedata.data1;
         const data2 = piedata.data2;
-        let team1 = "Team 1"
-        let team2 = "Team 2"
-        if (Object.keys(data).length !== 0) {
-            team1 = data['match_info'][0]['team1_name']
-            team2 = data['match_info'][0]['team2_name'];
+        let team1 = pie['team_names'][0]['team1'];
+        let team2 = pie['team_names'][0]['team2'];
+        let winner = pie['team_names'][0]['winner'];
+        if ((piedata.total1 > piedata.total2 && team1 !== winner) ||
+            (piedata.total1 < piedata.total2 && team1 === winner)) {
+                team1 = [team2, team2 = team1][0];
         }
 
         piechart = (<>
@@ -155,7 +156,7 @@ function Summary(props) {
         </>)
     }
 
-    if (data.match_info.length !== 0) {
+    if (Object.keys(data).length !== 0) {
         const info = data['match_info'][0];
         acchead = <>
             <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", marginLeft: "15%", color:"#4e4e4e" }}>

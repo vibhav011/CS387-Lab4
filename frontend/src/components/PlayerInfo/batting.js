@@ -10,11 +10,10 @@ const jsonKeys = [
 ]
 
 function changeColor(data) {
-    // '#0088FE', '#C036C7', '#FFBB28', '#C7363D','#00C49F', '#FF8042'
     let runs = data["runs"]
-    if (runs < 20) {
+    if (runs < 30) {
         return "#FFBB28"
-    } else if (runs < 50) {
+    } else if (runs <= 50) {
         return "#0088FE"
     }
     return "#C7363D"

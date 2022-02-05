@@ -1,4 +1,4 @@
-import { CardContent, CardHeader } from "@mui/material";
+import { Alert, CardContent, CardHeader, Snackbar } from "@mui/material";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Container from "@mui/material/Container";
@@ -58,9 +58,19 @@ class MatchInfo extends React.Component {
             b2data: {},
             b3data: {},
             b4data: {},
-            b4pie: []
+            b4pie: {},
+            open: false,
+            msg: "Error"
         };
     }
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState({ open: false });
+    };
 
     componentDidMount() {
         const { id } = this.props.params;
@@ -78,11 +88,14 @@ class MatchInfo extends React.Component {
 
                 if (data.status === 200) {
                     let info = body.match_info.info[0];
-                    this.setState({ b2data: body,
-                                    teams: info.team1_name + " vs " + info.team2_name,
-                                    year: info.year_of_playing });
+                    this.setState({
+                        b2data: body,
+                        teams: info.team1_name + " vs " + info.team2_name,
+                        year: info.year_of_playing
+                    });
                 }
                 else {
+                    this.setState({ open: true, msg: `Error ${data.status}: ${body.error}` });
                     console.log("Error in scorecard fetch");
                     console.log(body.error);
                 }
@@ -101,7 +114,7 @@ class MatchInfo extends React.Component {
                     console.log(body.error);
                 }
             });
-        
+
         fetch(`http://localhost:8081/matches/match_summary/${id}`)
             .then(res => res.json().then(data => ({ status: res.status, body: data })))
             .then(data => {
@@ -115,14 +128,14 @@ class MatchInfo extends React.Component {
                     console.log(body.error);
                 }
             });
-        
+
         fetch(`http://localhost:8081/matches/pie_chart/${id}`)
             .then(res => res.json().then(data => ({ status: res.status, body: data })))
             .then(data => {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    this.setState({ b4pie: body.data });
+                    this.setState({ b4pie: body });
                 }
                 else {
                     console.log("Error in match_summary fetch");
@@ -145,14 +158,17 @@ class MatchInfo extends React.Component {
                 <MKBox component="section" py={{ xs: 3, md: 3 }}>
                     <Container>
                         <Grid container alignItems="center" justifyContent="center">
+                            <Snackbar open={this.state.open} onClose={this.handleClose}>
+                                <Alert onClose={this.handleClose} severity="error" sx={{ width: '100%' }}>
+                                    {this.state.msg}
+                                </Alert>
+                            </Snackbar>
                             <Card sx={{ borderRadius: '10px', width: "85%" }}>
                                 <CardHeader disableTypography={true}
                                     title={<Typography variant="h3">{this.state.teams}</Typography>}
                                     subheader={<Typography sx={{ color: "#52575e" }} variant="h4">{this.state.year}</Typography>} />
 
                                 <CardContent>
-                                    {/* <Typography variant="h6" sx={{ marginTop: "-15px", color: "#52575e" }}>Batting Hand: {this.state.basic_info.batting_hand}</Typography>
-                                    <Typography gutterBottom variant="h6" sx={{ marginTop: "-5px", color: "#52575e" }}>Bowling Skill: {this.state.basic_info.bowling_skill}</Typography> */}
 
                                     <Tabs value={this.state.value} onChange={this.handleChange} aria-label="basic tabs example">
                                         <Tab label="Scorecard" {...a11yProps(0)} />
@@ -169,7 +185,7 @@ class MatchInfo extends React.Component {
                                     <TabPanel value={this.state.value} index={2}>
                                         <Summary data={this.state.b4data} pie={this.state.b4pie} />
                                     </TabPanel>
-        
+
                                 </CardContent>
                             </Card>
                         </Grid>

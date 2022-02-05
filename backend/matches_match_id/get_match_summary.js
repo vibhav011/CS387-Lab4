@@ -1,7 +1,7 @@
-async function updateRetJSON(db_client, query, params, ret_json, error, key) {
+async function updateRetJSON(db_client, query, params, ret_json, error, key, zeroAllowed = false) {
   try {
     res = await db_client.query(query, params)
-    if(res.rows.length === 0) {
+    if(res.rows.length === 0 && !zeroAllowed) {
       error.status = 404
       error.message = "No matching match id found"
     }
@@ -40,11 +40,11 @@ async function get_match_summary_json(db_client, match_id, innings_no, ret_json,
 
   const query2 = 'SELECT player_name as bowler_name,  wickets, runs_given, overs_bowled from player, (SELECT bowler, wickets, runs_given, overs_bowled, dense_rank() \
     over (order by wickets desc, runs_given asc, bowler asc) bowler_rank from \
-    (SELECT bowler, count(out_type) as wickets, count(runs_scored) as runs_given, \
+    (SELECT bowler, count(out_type) as wickets, sum(runs_scored) as runs_given, \
     count(distinct over_id) as overs_bowled from match, ball_by_ball where ball_by_ball.match_id = match.match_id and match.match_id = $1 and innings_no = $2\
     group by bowler) sq) sq2 where bowler_rank < 4 and wickets > 0 and player.player_id = bowler order by bowler_rank'
 
-  await updateRetJSON(db_client, query2, [match_id, innings_no], ret_json, error, 'bowlers')
+  await updateRetJSON(db_client, query2, [match_id, innings_no], ret_json, error, 'bowlers', zeroAllowed = true)
 }
 
 const query3 = 'SELECT match_id, (SELECT team_name from team where team_id = team1) team1_name,\
