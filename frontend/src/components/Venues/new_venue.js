@@ -50,7 +50,6 @@ function VenueAdd(props) {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    // console.log(body.data);
                     // setRows(body.data.map(venue => formatter(venue)));
                     setSev("success");
                     setMsg("Submitted");

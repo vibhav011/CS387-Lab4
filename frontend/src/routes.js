@@ -36,20 +36,7 @@ Coded by www.creative-tim.com
   10. The `rowsPerColumn` key is used to define that how many rows should be in a column.
 */
 
-// @mui material components
-// import Icon from "@mui/material/Icon";
-
-// // @mui icons
-// import GitHubIcon from "@mui/icons-material/GitHub";
-
-// // Pages
-// import AboutUs from "layouts/pages/landing-pages/about-us";
-// import ContactUs from "layouts/pages/landing-pages/contact-us";
-// import Author from "layouts/pages/landing-pages/author";
-// import SignIn from "layouts/pages/authentication/sign-in";
-
 // Sections
-// import PageHeaders from "layouts/sections/page-sections/page-headers";
 import { AddLocationAlt, Place, ScoreRounded, SportsCricket } from "@mui/icons-material";
 
 const routes = [
@@ -57,25 +44,21 @@ const routes = [
     name: "matches",
     icon: <SportsCricket />,
     route: "/matches?skip=0&limit=10",
-    // component: <Matches />,
   },
   {
     name: "points",
     icon: <ScoreRounded />,
     route: "/pointstable/2017",
-    // component: <Features />,
   },
   {
     name: "venues",
     icon: <Place />,
     route: "/venues",
-    // component: <Features />,
   },
   {
     name: "add venue",
     icon: <AddLocationAlt />,
     route: "/venues/add",
-    // component: <Features />,
   },
 ];
 

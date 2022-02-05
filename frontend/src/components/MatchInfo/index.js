@@ -16,9 +16,6 @@ import ScorecardElement from "./scorecard";
 import ScoreComparisonElement from "./scoreComparison";
 import Summary from "./summary";
 
-
-
-
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
     console.log("tabpanel props", props);

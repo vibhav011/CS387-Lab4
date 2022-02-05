@@ -15,9 +15,6 @@ import { useParams } from 'react-router-dom';
 import Batting from "./batting";
 import Bowling from "./bowling";
 
-
-
-
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
     console.log("tabpanel props", props);
@@ -85,7 +82,6 @@ class PlayerInfo extends React.Component {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    // console.log(body);
                     this.setState({ basic_info: body.data[0] });
                 }
                 else {
@@ -99,7 +95,6 @@ class PlayerInfo extends React.Component {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    // console.log(body);
                     this.setState({ battingStats: body.data[0] });
                 }
                 else {
@@ -114,7 +109,6 @@ class PlayerInfo extends React.Component {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    // console.log(body);
                     this.setState({ battingGraph: body.data });
                 }
                 else {
@@ -129,7 +123,6 @@ class PlayerInfo extends React.Component {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    // console.log(body);
                     this.setState({ bowlingStats: body.data[0] });
                 }
                 else {
@@ -144,7 +137,6 @@ class PlayerInfo extends React.Component {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    // console.log(body);
                     this.setState({ bowlingGraph: body.data });
                 }
                 else {

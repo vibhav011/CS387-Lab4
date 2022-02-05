@@ -11,10 +11,6 @@ import BaseLayout from "layouts/sections/components/BaseLayout";
 import React, { useEffect } from "react";
 import { useParams } from 'react-router-dom';
 
-
-
-
-
 const header = [
     'Team Name', 'Mat', 'Won', 'Lost', 'Tied', 'NR', 'Points'
 ]
@@ -51,7 +47,6 @@ function PointsTable(props) {
                 let body = data.body;
 
                 if (data.status === 200) {
-                    // console.log(body);
                     setRows(formatter(body.data));
                 }
                 else if (data.status === 404) {
