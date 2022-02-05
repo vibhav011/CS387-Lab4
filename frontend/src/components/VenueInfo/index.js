@@ -1,4 +1,4 @@
-import { CardContent, CardHeader } from "@mui/material";
+import { Alert, CardContent, CardHeader, Snackbar } from "@mui/material";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Container from "@mui/material/Container";
@@ -20,7 +20,6 @@ import Outline from "./outline";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-    console.log("tabpanel props", props);
     return (
         <div
             role="tabpanel"
@@ -59,17 +58,27 @@ class VenueInfo extends React.Component {
         this.state = {
             value: 0,
             basicInfo: [["Venue name", "Venue Name"],
-                        ["Address", "City"],
-                        ["Capacity", ""],
-                        ["Total matches played", ""],
-                        ["Highest total recorded", ""],
-                        ["Lowest total recorded", ""],
-                        ["Highest score chased", ""]
-                        ],
+            ["Address", "City, Country"],
+            ["Capacity", ""],
+            ["Total matches played", ""],
+            ["Highest total recorded", ""],
+            ["Lowest total recorded", ""],
+            ["Highest score chased", ""]
+            ],
             outline: {},
-            first_innings: []
+            first_innings: [],
+            open: false,
+            msg: "Error"
         };
     }
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState({ open: false });
+    };
 
     componentDidMount() {
         const { id } = this.props.params;
@@ -87,11 +96,19 @@ class VenueInfo extends React.Component {
 
                 if (data.status === 200) {
                     let info = body.data[0];
+                    let newInfo = {};
+                    Object.keys(info).map(k => {
+                        if (k !== "city_name" || k !== "country_name")
+                            newInfo[k] = info[k];
+                        return null;
+                    });
+                    newInfo["address"] = `${info["city_name"]}, ${info["country_name"]}`;
                     let b = this.state.basicInfo;
-                    jsonKeys.map((k, i) => b[i][1] = info[k]);
+                    jsonKeys.map((k, i) => b[i][1] = newInfo[k]);
                     this.setState({ basicInfo: b });
                 }
                 else {
+                    this.setState({ open: true, msg: `Error ${data.status}: ${body.error}` });
                     console.log("Error in scorecard fetch");
                     console.log(body.error);
                 }
@@ -110,7 +127,7 @@ class VenueInfo extends React.Component {
                     console.log(body.error);
                 }
             });
-        
+
         fetch(`http://localhost:8081/venues/venue_first_innings/${id}`)
             .then(res => res.json().then(data => ({ status: res.status, body: data })))
             .then(data => {
@@ -126,9 +143,6 @@ class VenueInfo extends React.Component {
             });
     }
 
-    // handleChange = (panel) => (event, isExpanded) => {
-    //     this.setState({ expanded: isExpanded ? panel : false });
-    // };
     handleChange = (event, newValue) => {
         // setValue(newValue);
         this.setState({ value: newValue });
@@ -144,6 +158,11 @@ class VenueInfo extends React.Component {
                 <MKBox component="section" py={{ xs: 3, md: 3 }}>
                     <Container>
                         <Grid container alignItems="center" justifyContent="center">
+                            <Snackbar open={this.state.open} onClose={this.handleClose}>
+                                <Alert onClose={this.handleClose} severity="error" sx={{ width: '100%' }}>
+                                    {this.state.msg}
+                                </Alert>
+                            </Snackbar>
                             <Card sx={{ borderRadius: '10px', width: "85%" }}>
                                 <CardHeader disableTypography={true}
                                     title={<Typography variant="h3">{this.state.basicInfo[0][1]}</Typography>}
@@ -165,7 +184,7 @@ class VenueInfo extends React.Component {
                                     <TabPanel value={this.state.value} index={2}>
                                         <FirstInnings data={this.state.first_innings} />
                                     </TabPanel>
-        
+
                                 </CardContent>
                             </Card>
                         </Grid>

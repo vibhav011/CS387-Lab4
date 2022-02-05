@@ -157,7 +157,6 @@ function Summary(props) {
 
     if (data.match_info.length !== 0) {
         const info = data['match_info'][0];
-        console.log("info", info);
         acchead = <>
             <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: "bold", marginLeft: "15%", color:"#4e4e4e" }}>
                 {info.match_id}
