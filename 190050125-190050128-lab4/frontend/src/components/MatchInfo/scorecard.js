@@ -61,7 +61,8 @@ function ScorecardElement(props) {
             </AccordionSummary>
             <AccordionDetails>
                 <CustomTable2 header={headers_bat} rows={formatter(data, 'innings1', 'batting')} />
-                <Typography>&nbsp;</Typography>
+                <Typography sx={{marginTop:'5px', marginLeft:'10px', marginBottom:'-5px' }} variant="h6">Extras: {data.innings1.extras[0].sum}</Typography>
+                <Typography sx={{marginBottom:'15px', marginLeft:'10px'}} variant="h6">Total: {data.innings1.score[0].runs} ({data.innings1.score[0].wickets})</Typography>
                 <CustomTable2 header={headers_bowl} rows={formatter(data, 'innings1', 'bowling')} />
             </AccordionDetails>
         </Accordion>
@@ -79,7 +80,8 @@ function ScorecardElement(props) {
             </AccordionSummary>
             <AccordionDetails>
                 <CustomTable2 header={headers_bat} rows={formatter(data, 'innings2', 'batting')} />
-                <Typography>&nbsp;</Typography>
+                <Typography sx={{marginTop:'5px', marginLeft:'10px', marginBottom:'-5px' }} variant="h6">Extras: {data.innings2.extras[0].sum}</Typography>
+                <Typography sx={{marginBottom:'15px', marginLeft:'10px'}} variant="h6">Total: {data.innings2.score[0].runs} ({data.innings2.score[0].wickets})</Typography>
                 <CustomTable2 header={headers_bowl} rows={formatter(data, 'innings2', 'bowling')} />
             </AccordionDetails>
         </Accordion>

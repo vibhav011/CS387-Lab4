@@ -14,7 +14,7 @@ function formatter(data) {
     return newData.map((e) => {
         for (let i = 0; i < data.length; i++) {
             if (parseInt(data[i]['season_year']) === e['season_year']) {
-                e["avg_innings_runs"] = parseInt(data[i]['avg_innings_runs']);
+                e["avg_innings_runs"] = parseFloat(data[i]['avg_innings_runs']);
                 break;
             }
         }

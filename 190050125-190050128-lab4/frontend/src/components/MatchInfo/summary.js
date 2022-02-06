@@ -175,7 +175,7 @@ function Summary(props) {
                 <CardHeader
                     sx={{ backgroundColor: '#555359', color: '#fff' }}
                     disableTypography={true}
-                    title={<b>{info.team1_name}</b>}
+                    title={<b>{data.team_names.team1_name[0].team_name}</b>}
                 />
                 <CardContent>
                     <CustomTable2 header={headers} rows={formatter2(data, "team1")} />
@@ -186,7 +186,7 @@ function Summary(props) {
                 <CardHeader
                     sx={{ backgroundColor: '#555359', color: '#fff' }}
                     disableTypography={true}
-                    title={<b>{info.team2_name}</b>}
+                    title={<b>{data.team_names.team2_name[0].team_name}</b>}
                 />
                 <CardContent>
                     <CustomTable2 header={headers} rows={formatter2(data, "team2")} />

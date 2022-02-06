@@ -40,7 +40,7 @@ async function get_match_summary_json(db_client, match_id, innings_no, ret_json,
 
   const query2 = 'SELECT player_name as bowler_name,  wickets, runs_given, overs_bowled from player, (SELECT bowler, wickets, runs_given, overs_bowled, dense_rank() \
     over (order by wickets desc, runs_given asc, bowler asc) bowler_rank from \
-    (SELECT bowler, count(out_type) as wickets, sum(runs_scored) as runs_given, \
+    (SELECT bowler, sum(case when out_type is NULL or out_type in (\'run out\', \'retired hurt\') then 0 else 1 end) as wickets, sum(runs_scored) as runs_given, \
     count(distinct over_id) as overs_bowled from match, ball_by_ball where ball_by_ball.match_id = match.match_id and match.match_id = $1 and innings_no = $2\
     group by bowler) sq) sq2 where bowler_rank < 4 and wickets > 0 and player.player_id = bowler order by bowler_rank'
 
