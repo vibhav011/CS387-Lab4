@@ -169,13 +169,19 @@ function Summary(props) {
                 {info.season_year}
             </Typography>
         </>
-
+        let s1 = "", w1 = "", s2 = "", w2 = "";
+        if (Object.keys(props.summ).length !== 0) {
+            s1 = props.summ['innings1']['runs'];
+            w1 = props.summ['innings1']['wickets'];
+            s2 = props.summ['innings2']['runs'];
+            w2 = props.summ['innings2']['wickets'];
+        }
         tables = (<>
             <Card>
                 <CardHeader
                     sx={{ backgroundColor: '#555359', color: '#fff' }}
                     disableTypography={true}
-                    title={<b>{data.team_names.team1_name[0].team_name}</b>}
+                    title={<b>{data.team_names.team1_name[0].team_name} <Typography variant='h4' sx={{float:'right', marginRight:"30px", color:'#fff'}}>{s1} - {w1}</Typography></b>}
                 />
                 <CardContent>
                     <CustomTable2 header={headers} rows={formatter2(data, "team1")} />
@@ -186,7 +192,7 @@ function Summary(props) {
                 <CardHeader
                     sx={{ backgroundColor: '#555359', color: '#fff' }}
                     disableTypography={true}
-                    title={<b>{data.team_names.team2_name[0].team_name}</b>}
+                    title={<b>{data.team_names.team2_name[0].team_name} <Typography variant='h4' sx={{float:'right', marginRight:"30px", color:'#fff'}}>{s2} - {w2}</Typography></b>}
                 />
                 <CardContent>
                     <CustomTable2 header={headers} rows={formatter2(data, "team2")} />

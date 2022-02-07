@@ -59,6 +59,7 @@ class MatchInfo extends React.Component {
             b3data: {},
             b4data: {},
             b4pie: {},
+            summ: {},
             open: false,
             msg: "Error"
         };
@@ -91,7 +92,9 @@ class MatchInfo extends React.Component {
                     this.setState({
                         b2data: body,
                         teams: info.team1_name + " vs " + info.team2_name,
-                        year: info.year_of_playing
+                        year: info.year_of_playing,
+                        summ: {"innings1":body["innings1"]["score"][0],
+                               "innings2":body["innings2"]["score"][0]}
                     });
                 }
                 else {
@@ -183,7 +186,7 @@ class MatchInfo extends React.Component {
                                         <ScoreComparisonElement data={this.state.b3data} />
                                     </TabPanel>
                                     <TabPanel value={this.state.value} index={2}>
-                                        <Summary data={this.state.b4data} pie={this.state.b4pie} />
+                                        <Summary data={this.state.b4data} pie={this.state.b4pie} summ={this.state.summ} />
                                     </TabPanel>
 
                                 </CardContent>

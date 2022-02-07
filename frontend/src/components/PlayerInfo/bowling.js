@@ -33,7 +33,8 @@ function Bowling(props) {
         if (props.graph.length === 0) {
             graph = (<div>No Data</div>)
         } else {
-            const graphData = props.graph.map((x) => {return {match_id: x["match_id"], runs: parseInt(x["runs_conceded"]), wickets: parseInt(x["wickets"])}})
+            let graphData = props.graph.map((x) => {return {match_id: x["match_id"], runs: parseInt(x["runs_conceded"]), wickets: parseInt(x["wickets"])}})
+            graphData.sort((a, b) => {return parseInt(a.match_id) - parseInt(b.match_id)})
             graph = (
                 <ResponsiveContainer width="100%" height={400}>
                     <ComposedChart width={300} height={300} margin = {{ top: 25, right: 25, bottom: 25, left: 25 }}

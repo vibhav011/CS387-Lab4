@@ -12,8 +12,6 @@ function get_bowling_graph(db_client, request, response) { // request and respon
       if (err) {
         console.log(err)
         response.status(500).json({ error: err.message })
-      } else if (res.rows.length === 0) {
-        response.status(404).json({ error: 'No matching player id found' })
       } else {
         ret_json = res.rows
         response.status(200).json({ data: ret_json })
